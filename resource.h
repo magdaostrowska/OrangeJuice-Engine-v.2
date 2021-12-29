@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Archivo de inclusión generado de Microsoft Visual C++.
-// Usado por Ragnar Engine.rc
+// Usado por OrangeJuice Engine.rc
 //
 #define IDI_ICON1                       101
 

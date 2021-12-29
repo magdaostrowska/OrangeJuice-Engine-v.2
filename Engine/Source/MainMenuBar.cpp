@@ -175,13 +175,13 @@ bool MainMenuBar::Update(float dt)
 			ImGui::MenuItem("About Orange Juice Engine", "", &menus[(int)Menus::ABOUT]->active);
 
 			if (ImGui::MenuItem("Documentation", "F1", &ret))
-				app->RequestBrowser("https://github.com/UriKurae/Ragnar-Engine");
+				app->RequestBrowser("https://github.com/magdaostrowska/OrangeJuice-Engine-v.2");
 
 			if (ImGui::MenuItem("Report a Bug", "", &ret))
-				app->RequestBrowser("https://github.com/UriKurae/Ragnar-Engine/issues");
+				app->RequestBrowser("https://github.com/magdaostrowska/OrangeJuice-Engine-v.2/issues");
 
 			if (ImGui::MenuItem("Download latest", "", &ret))
-				app->RequestBrowser("https://github.com/UriKurae/Ragnar-Engine/releases");
+				app->RequestBrowser("https://github.com/magdaostrowska/OrangeJuice-Engine-v.2/releases");
 
 			ImGui::EndMenu();
 		}
