@@ -49,6 +49,9 @@
     <Filter Include="Sources\Resources\Importers">
       <UniqueIdentifier>{3c644c45-199c-460f-9c95-bb1da2fa630e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Particles">
+      <UniqueIdentifier>{6f426947-e7b0-407e-8703-a09d956a1138}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Source\Module.h">
@@ -259,6 +262,11 @@
       <Filter>Sources\Tools</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Engine\Source\Particle.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleSystem.h" />
+    <ClInclude Include="Engine\Source\Emitter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Source\ModuleCamera3D.cpp">
@@ -426,6 +434,7 @@
     <ClCompile Include="Engine\Source\Model.cpp">
       <Filter>Sources\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OrangeJuice Engine.rc" />

@@ -3,7 +3,6 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
-
 #include "ConsoleMenu.h"
 #include "ConfigurationMenu.h"
 #include "MainMenuBar.h"
@@ -276,8 +275,7 @@ bool MainMenuBar::Update(float dt)
 
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KeyState::KEY_REPEAT &&
-		app->input->GetKey(SDL_SCANCODE_N) == KeyState::KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KeyState::KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_N) == KeyState::KEY_DOWN)
 	{
 		saveWindow = true;
 	}

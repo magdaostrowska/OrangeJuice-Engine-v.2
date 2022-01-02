@@ -118,6 +118,7 @@
     <ClInclude Include="Engine\Source\ConsoleMenu.h" />
     <ClInclude Include="Engine\Source\ContentBrowserMenu.h" />
     <ClInclude Include="Engine\Source\Dialogs.h" />
+    <ClInclude Include="Engine\Source\Emitter.h" />
     <ClInclude Include="Engine\Source\FileSystem.h" />
     <ClInclude Include="Engine\Source\Framebuffer.h" />
     <ClInclude Include="Engine\Source\GameObject.h" />
@@ -145,6 +146,8 @@
     <ClInclude Include="Engine\Source\ModuleRenderer3D.h" />
     <ClInclude Include="Engine\Source\ModuleScene.h" />
     <ClInclude Include="Engine\Source\ModuleWindow.h" />
+    <ClInclude Include="Engine\Source\Particle.h" />
+    <ClInclude Include="Engine\Source\ParticleSystem.h" />
     <ClInclude Include="Engine\Source\Primitive.h" />
     <ClInclude Include="Engine\Source\Primitives.h" />
     <ClInclude Include="Engine\Source\Profiling.h" />
@@ -206,6 +209,7 @@
     <ClCompile Include="Engine\Source\ModuleRenderer3D.cpp" />
     <ClCompile Include="Engine\Source\ModuleScene.cpp" />
     <ClCompile Include="Engine\Source\ModuleWindow.cpp" />
+    <ClCompile Include="Engine\Source\ParticleSystem.cpp" />
     <ClCompile Include="Engine\Source\Primitive.cpp" />
     <ClCompile Include="Engine\Source\Quadtree.cpp" />
     <ClCompile Include="Engine\Source\ResourceManager.cpp" />
