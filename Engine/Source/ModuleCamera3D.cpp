@@ -178,12 +178,13 @@ bool ModuleCamera3D::Update(float dt)
 			app->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)
 		{
 			GameObject* target = app->editor->GetGO();
+			TransformComponent*  transformComponent = (TransformComponent*)target->GetComponent(ComponentType::TRANSFORM);
 			if (target != nullptr)
 			{
 				float3 targetPos = {};
 				Quat targetRot = {};
 				float3 targetSize = {};
-				target->GetComponent<TransformComponent>()->GetGlobalTransform().Decompose(targetPos, targetRot, targetSize);
+				transformComponent->GetGlobalTransform().Decompose(targetPos, targetRot, targetSize);
 				float3 distanceTarget = cameraFrustum.Pos() - targetPos;
 
 				Quat rotateOrbitY;
@@ -255,7 +256,7 @@ bool ModuleCamera3D::Update(float dt)
 				std::map<float, GameObject*> triangleMap;
 				for (; it < gameObjects.end(); ++it)
 				{
-					TransformComponent* transform = (*it)->GetComponent<TransformComponent>();
+					TransformComponent* transform = (TransformComponent*)(*it)->GetComponent(ComponentType::TRANSFORM);
 					if ((*it)->GetAABB().IsFinite() && transform)
 					{		
 						picking = prevLine;
@@ -263,7 +264,7 @@ bool ModuleCamera3D::Update(float dt)
 						
 						if (hit)
 						{
-							MeshComponent* meshComponent = (*it)->GetComponent<MeshComponent>();
+							MeshComponent* meshComponent = (MeshComponent*)(*it)->GetComponent(ComponentType::TRANSFORM);
 							if (meshComponent)
 							{
 								const std::vector<float3>& meshVertices = meshComponent->GetMesh()->GetVerticesVector();

@@ -435,6 +435,7 @@
       <Filter>Sources\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\ParticleSystem.cpp" />
+    <ClCompile Include="Engine\Source\Emitter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OrangeJuice Engine.rc" />

@@ -34,7 +34,7 @@ public:
 	inline void SetTransform(TransformComponent* trans) { transform = trans; }
 	inline void SetMaterial(MaterialComponent* mat) { material = mat; }
 
-	inline AABB GetLocalAABB() { return localBoundingBox; }
+	AABB GetLocalAABB() { return localBoundingBox; }
 	const std::shared_ptr<Mesh> GetMesh() const { return mesh; }
 private:
 	TransformComponent* transform;

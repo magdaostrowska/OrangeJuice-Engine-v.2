@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "Globals.h"
+#include "ParticleSystem.h"
 
 #include "JsonParsing.h"
 #include "VertexBuffer.h"
@@ -114,16 +115,33 @@ void GameObject::DrawEditor()
 	ImGui::SetNextItemWidth(120);
 	if (ImGui::BeginCombo(" ", "New Component"))
 	{
-		if (ImGui::Selectable("Mesh Component"))
+		if (GetComponent(ComponentType::MESH_RENDERER) == nullptr) 
 		{
-			CreateComponent(ComponentType::MESH_RENDERER);
-			newComponent = false;
+			if (ImGui::Selectable("Mesh Component"))
+			{
+				CreateComponent(ComponentType::MESH_RENDERER);
+				newComponent = false;
+			}
 		}
-		if (ImGui::Selectable("Material Component"))
+		
+		if (GetComponent(ComponentType::MATERIAL) == nullptr) 
 		{
-			CreateComponent(ComponentType::MATERIAL);
-			newComponent = false;
+			if (ImGui::Selectable("Material Component"))
+			{
+				CreateComponent(ComponentType::MATERIAL);
+				newComponent = false;
+			}
 		}
+		
+		if(GetComponent(ComponentType::PARTICLE_SYSTEM) == nullptr)
+		{
+			if (ImGui::Selectable("Particle System Component"))
+			{
+				CreateComponent(ComponentType::PARTICLE_SYSTEM);
+				newComponent = false;
+			}
+		}
+		
 		else if (!ImGui::IsAnyItemHovered() && ((ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1])))
 		{
 			newComponent = false;
@@ -210,9 +228,21 @@ void GameObject::DebugColliders()
 	vertex->Unbind();
 }
 
+Component* GameObject::GetComponent(ComponentType type)
+{
+	for (int i = 0; i < components.size(); i++)
+	{
+		if(components[i]->GetType() == type)
+			return components[i];
+	}
+
+	return nullptr;
+}
+
 Component* GameObject::CreateComponent(ComponentType type)
 {
 	Component* component = nullptr;
+	TransformComponent* transform = nullptr;
 
 	switch (type)
 	{
@@ -220,16 +250,23 @@ Component* GameObject::CreateComponent(ComponentType type)
 		component = new TransformComponent(this);
 		break;
 	case ComponentType::MESH_RENDERER:
-		component = new MeshComponent(this, GetComponent<TransformComponent>());
+		transform = (TransformComponent*)GetComponent(ComponentType::TRANSFORM);
+		component = new MeshComponent(this, transform);
 		break;
 	case ComponentType::CAMERA:
-		component = new CameraComponent(this, GetComponent<TransformComponent>());
+		transform = (TransformComponent*)GetComponent(ComponentType::TRANSFORM);
+		component = new CameraComponent(this, transform);
 		app->scene->SetMainCamera((CameraComponent*)component);
 		break;
-	case ComponentType::MATERIAL:
+	case ComponentType::MATERIAL: {
 		component = new MaterialComponent(this);
-		MeshComponent* m = GetComponent<MeshComponent>();
+		MeshComponent* m = (MeshComponent * )GetComponent(ComponentType::MESH_RENDERER);
 		if (m != nullptr) m->SetMaterial((MaterialComponent*)component);
+		break;
+	}
+	case ComponentType::PARTICLE_SYSTEM:
+		transform = (TransformComponent*)GetComponent(ComponentType::TRANSFORM);
+		component = new ParticleSystem(this, transform);
 		break;
 	}
 
@@ -257,11 +294,11 @@ void GameObject::CopyComponent(Component* component)
 		c = new TransformComponent(dynamic_cast<TransformComponent*>(component));
 		break;
 	case ComponentType::MESH_RENDERER:
-		c = new MeshComponent(dynamic_cast<MeshComponent*>(component), GetComponent<TransformComponent>());
+		c = new MeshComponent(dynamic_cast<MeshComponent*>(component), (TransformComponent*)GetComponent(ComponentType::TRANSFORM));
 		break;
 	case ComponentType::MATERIAL:
 		c = new MaterialComponent(dynamic_cast<MaterialComponent*>(component));
-		MeshComponent* m = GetComponent<MeshComponent>();
+		MeshComponent* m = (MeshComponent*)GetComponent(ComponentType::MESH_RENDERER);
 		if (m != nullptr) m->SetMaterial((MaterialComponent*)c);
 		break;
 	}
@@ -293,7 +330,9 @@ void GameObject::RemoveChild(GameObject* object)
 void GameObject::SetAABB(AABB newAABB, bool needToClean)
 {
 	globalObb = newAABB;
-	globalObb.Transform(GetComponent<TransformComponent>()->GetGlobalTransform());
+	TransformComponent* transform = (TransformComponent*)GetComponent(ComponentType::TRANSFORM);
+
+	globalObb.Transform(transform->GetGlobalTransform());
 
 	globalAabb.Enclose(globalObb);
 
@@ -347,17 +386,22 @@ void GameObject::SetAABB(OBB newOBB)
 }
 
 void GameObject::SetNewAABB()
-{
+{	
 	for (int i = 0; i < children.size(); ++i)
 	{
 		children[i]->SetNewAABB();
 		OBB newObb = children[i]->GetAABB().ToOBB();
 		globalAabb.Enclose(newObb);
 	}
-	if (GetComponent<MeshComponent>() && GetComponent<MeshComponent>()->GetMesh())
+
+	MeshComponent* meshComponent = (MeshComponent*)GetComponent(ComponentType::MESH_RENDERER);
+	TransformComponent* transformComponent = (TransformComponent*)GetComponent(ComponentType::TRANSFORM);
+	Component* tmp;
+
+	if (meshComponent != nullptr && meshComponent->GetMesh())
 	{
-		OBB newObb = GetComponent<MeshComponent>()->GetLocalAABB().ToOBB();
-		newObb.Transform(GetComponent<TransformComponent>()->GetGlobalTransform());
+		OBB newObb = meshComponent->GetLocalAABB().ToOBB();
+		newObb.Transform((transformComponent)->GetGlobalTransform());
 		globalAabb.Enclose(newObb);
 	}
 }

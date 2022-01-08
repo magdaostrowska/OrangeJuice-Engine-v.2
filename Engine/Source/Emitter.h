@@ -10,5 +10,16 @@ public:
 
 	virtual void EmitParticle(Particle& particle);
 
+	void Emit();
+	void Render();
+	void UpdateParticle(float dt);
+	void Update(float dt);
+
+public:
+
 	float3 position;
+	bool isActive;
+
+	std::vector<Particle> particlesBuff;
+	Particle* particleReference;
 };

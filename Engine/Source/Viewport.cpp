@@ -59,11 +59,16 @@ void Viewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int curre
 
 			math::float4x4 view = app->camera->cameraFrustum.ViewMatrix();
 
-			math::float4x4 tr = app->editor->GetGO()->GetComponent<TransformComponent>()->GetLocalTransform().Transposed();
-			ImGuizmo::Manipulate(view.Transposed().ptr(), app->camera->cameraFrustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)currentOperation, ImGuizmo::MODE::LOCAL, tr.ptr());
-			if (ImGuizmo::IsUsing())
+			TransformComponent* transformComponent = (TransformComponent*)app->editor->GetGO()->GetComponent(ComponentType::TRANSFORM);
+
+			if (transformComponent != nullptr)
 			{
-				app->editor->GetGO()->GetComponent<TransformComponent>()->SetTransform(tr.Transposed());
+				math::float4x4 tr = transformComponent->GetLocalTransform().Transposed();
+				ImGuizmo::Manipulate(view.Transposed().ptr(), app->camera->cameraFrustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)currentOperation, ImGuizmo::MODE::LOCAL, tr.ptr());
+				if (ImGuizmo::IsUsing())
+				{
+					transformComponent->SetTransform(tr.Transposed());
+				}
 			}
 		}
 
@@ -87,7 +92,7 @@ void Viewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int curre
 		}
 
 		GameObject* camera = app->editor->GetGO();
-		if (camera && camera->GetComponent<CameraComponent>())
+		if (camera && camera->GetComponent(ComponentType::CAMERA))
 		{
 			ImGui::SetNextWindowSize(ImVec2(210, 150));
 			ImGui::SetNextWindowPos(ImVec2((bounds.x + bounds.z) - 225, (bounds.y + bounds.w) - 150));

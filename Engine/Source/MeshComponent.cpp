@@ -20,7 +20,7 @@ MeshComponent::MeshComponent(GameObject* own, TransformComponent* trans) : mater
 	type = ComponentType::MESH_RENDERER;
 	owner = own;
 	mesh = nullptr;
-	material = owner->GetComponent<MaterialComponent>();
+	material = (MaterialComponent*)owner->GetComponent(ComponentType::MATERIAL);
 
 	showMeshMenu = false;
 }

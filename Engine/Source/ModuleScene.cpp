@@ -8,13 +8,16 @@
 #include "FileSystem.h"
 #include "Resource.h"
 #include "ResourceManager.h"
+#include "Emitter.h"
 
 #include <stack>
 
 #include "Profiling.h"
+#include "ParticleSystem.h"
 
 ModuleScene::ModuleScene() : sceneDir(""), mainCamera(nullptr), gameState(GameState::NOT_PLAYING), frameSkip(0), resetQuadtree(true), goToRecalculate(nullptr)
 {
+	smoke = nullptr;
 	root = new GameObject();
 	root->SetName("Untitled");
 }
@@ -37,6 +40,13 @@ bool ModuleScene::Start()
 	ResourceManager::GetInstance()->ImportAllResources();
 	ImportPrimitives();
 	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"));
+	smoke = CreateGameObject(root);
+	smoke->SetName("Smoke");
+	smoke->CreateComponent(ComponentType::PARTICLE_SYSTEM);
+
+	ParticleSystem* test = (ParticleSystem*)smoke->GetComponent(ComponentType::PARTICLE_SYSTEM);
+	Emitter* emitter = new Emitter();
+	test->SetEmitter(emitter);
 
 	return true;
 }

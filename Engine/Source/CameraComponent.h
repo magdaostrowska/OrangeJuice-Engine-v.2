@@ -29,12 +29,15 @@ public:
 
 	int CameraComponent::ContainsAaBox(const AABB& boundingBox);
 
+public:
+
 	float4x4 matrixViewFrustum;
 	float4x4 matrixProjectionFrustum;
+	TransformComponent* transform;
+
 private:
 
 	Frustum camera;
-	TransformComponent* transform;
 	Quat currentRotation;
 	float3 currentPos;
 

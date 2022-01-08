@@ -1,32 +1,58 @@
 #pragma once
 #include "Particle.h"
+#include "Globals.h"
+#include "Component.h"
+
+#include "MathGeoLib/src/MathGeoLib.h"
 #include <vector>
 
 class CameraComponent;
-class ParticleEmitter;
+class TransformComponent;
+class Emitter;
 
-class ParticleSystem {
+class ParticleSystem : public Component {
 
 public:
 
-	ParticleSystem();
+	ParticleSystem(GameObject* own, TransformComponent* trans, uint numParticles = 1);
 	~ParticleSystem();
 
-	void EmitParticles();
+	void SetEmitter(Emitter* emitter);
+	virtual void Render();
+	bool Update(float dt) override;
+	void OnEditor() override;
 
-	//virtual void Update(float fDeltaTime);
-	//virtual void Render();
+	void Resize(uint particlesNumber);
+
+public:
+
+	// A vertex for the particle
+	struct Vertex
+	{
+		Vertex(): 
+			pos(0.0f), 
+			diff(0), 
+			tex(0)
+		{}
+
+		float3   pos;      // Vertex position
+		Vec3   diff;  // Diffuse color
+		Vec2   tex;     // Texture coordinate
+	};
+	typedef std::vector<Vertex> VertexBuffer;
 
 protected:
 
-	void EmitParticle(Particle& particle);
+	void EmitParticles();
+	void BuildVertex();
 
 private:
 
-	typedef std::vector<Particle> ParticlesBuffer;
 	std::vector<Particle> particlesBuffer;
-	uint32_t particleBufferIndex = 999; // the vector of particles get resized after achieving a number of 1000 particles, so the last particle (before first) resize has index 999
+	std::vector<Emitter*> emitters;
 
-	ParticleEmitter* emitter;
-	ParticlesBuffer particles;
+	VertexBuffer vertexBuffer;
+	uint textureId;
+
+	TransformComponent* transform;
 };

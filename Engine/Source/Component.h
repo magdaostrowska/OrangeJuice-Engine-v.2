@@ -12,6 +12,7 @@ enum class ComponentType
 	MESH_RENDERER,
 	MATERIAL,
 	CAMERA,
+	PARTICLE_SYSTEM,
 };
 
 class Component

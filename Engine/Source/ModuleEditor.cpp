@@ -63,7 +63,7 @@ bool ModuleEditor::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_DELETE) == KeyState::KEY_UP)
 	{
-		if (selected && selected->GetComponent<CameraComponent>() == nullptr)
+		if (selected && selected->GetComponent(ComponentType::CAMERA) == nullptr)
 		{
 			for (std::vector<GameObject*>::iterator i = selectedParent->GetChilds().begin(); i != selectedParent->GetChilds().end(); ++i)
 			{

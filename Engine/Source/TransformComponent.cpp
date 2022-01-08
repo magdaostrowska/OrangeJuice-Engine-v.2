@@ -24,7 +24,7 @@ TransformComponent::TransformComponent(GameObject* own)
 	
 	if (owner->GetParent() != nullptr)
 	{
-		TransformComponent* tr = owner->GetParent()->GetComponent<TransformComponent>();
+		TransformComponent* tr = (TransformComponent*)owner->GetParent()->GetComponent(ComponentType::TRANSFORM);
 		if (tr != nullptr)
 			globalMatrix = localMatrix * tr->GetGlobalTransform();
 	}
@@ -156,7 +156,7 @@ void TransformComponent::UpdateTransform()
 
 	if (owner->GetParent() && owner->GetParent() != app->scene->GetRoot())
 	{
-		TransformComponent* parentTr = owner->GetParent()->GetComponent<TransformComponent>();
+		TransformComponent* parentTr = (TransformComponent*)owner->GetParent()->GetComponent(ComponentType::TRANSFORM);
 		if (parentTr) globalMatrix = parentTr->globalMatrix * localMatrix;
 	}
 	else
@@ -167,9 +167,9 @@ void TransformComponent::UpdateTransform()
 
 void TransformComponent::UpdateChildTransform(GameObject* go)
 {
-	TransformComponent* transform = go->GetComponent<TransformComponent>();
+	TransformComponent* transform = (TransformComponent*)go->GetComponent(ComponentType::TRANSFORM);
 	GameObject* parent = go->GetParent();
-	TransformComponent* parentTrans = parent->GetComponent<TransformComponent>();
+	TransformComponent* parentTrans = (TransformComponent*)parent->GetComponent(ComponentType::TRANSFORM);
 	if (transform)
 	{
 		transform->globalMatrix = parentTrans->GetGlobalTransform() * transform->localMatrix;
@@ -183,14 +183,17 @@ void TransformComponent::SetAABB()
 	OBB childOBB;
 	for (int i = 0; i < goList.size(); ++i)
 	{
-		TransformComponent* tr = goList[i]->GetComponent<TransformComponent>();
+		TransformComponent* tr = (TransformComponent*)goList[i]->GetComponent(ComponentType::TRANSFORM);
 		tr->SetAABB();
 		childOBB = tr->owner->GetAABB();
 		owner->SetAABB(childOBB);
 	}
-	if (owner->GetComponent<MeshComponent>())
+
+	MeshComponent* meshComponent = (MeshComponent*)owner->GetComponent(ComponentType::MESH_RENDERER);
+
+	if (owner->GetComponent(ComponentType::MESH_RENDERER) && meshComponent != nullptr)
 	{
-		OBB newObb = owner->GetComponent<MeshComponent>()->GetLocalAABB().ToOBB();
+		OBB newObb = meshComponent->GetLocalAABB().ToOBB();
 		newObb.Transform(globalMatrix);
 		owner->SetAABB(newObb);
 	}

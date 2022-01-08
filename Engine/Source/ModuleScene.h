@@ -80,7 +80,11 @@ public:
 	Quadtree& GetQuadtree() { return qTree; }
 	void SetGameDeltaTime(float deltaTime) { gameTimer.SetDesiredDeltaTime(deltaTime); }
 
+public: 
+
 	CameraComponent* mainCamera;
+	GameObject* smoke;
+
 private:
 	GameObject* root;
 	Quadtree qTree;

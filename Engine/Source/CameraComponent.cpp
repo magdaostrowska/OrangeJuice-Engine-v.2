@@ -62,7 +62,6 @@ void CameraComponent::OnEditor()
 
 bool CameraComponent::Update(float dt)
 {
-	
 	camera.SetPos(transform->GetPosition());
 	
 	if (!CompareRotations(currentRotation, transform->GetRotation()))
