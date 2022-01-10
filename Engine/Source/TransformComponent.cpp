@@ -120,6 +120,11 @@ void TransformComponent::SetTransform(float4x4 trMatrix)
 	changeTransform = true;
 }
 
+void TransformComponent::SetRotation(Quat rot)
+{
+	rotation = rot;
+}
+
 bool TransformComponent::OnLoad(JsonParsing& node)
 {
 	active = node.GetJsonBool("Active");

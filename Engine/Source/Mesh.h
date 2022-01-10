@@ -11,7 +11,7 @@
 
 struct ModelParameters;
 
-class Mesh : public Resource
+class Mesh : public Resource, public std::enable_shared_from_this<Mesh>
 {
 public:
 	Mesh(uint uid, std::string& assets, std::string& library);
@@ -21,6 +21,7 @@ public:
 	void UnLoad() override;
 
 	void Draw(bool& verticesNormals, bool& faceNormals, float3& colorNormal, float &colorLength);
+	void Draw();
 
 	void ShowVertexNormals(float3& colorNormal, float& normalLength);
 	void ShowFaceNormals(float3& colorNormal, float& normalLength);

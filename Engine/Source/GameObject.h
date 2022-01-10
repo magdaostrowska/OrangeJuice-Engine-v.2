@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include "Component.h"
-
+#include "BillboardParticle.h"
 #include "TransformComponent.h"
 #include "MeshComponent.h"
 #include "MaterialComponent.h"

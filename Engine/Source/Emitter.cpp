@@ -1,9 +1,26 @@
 #include "Emitter.h"
+#include "ResourceManager.h"
+#include "Mesh.h"
 
 Emitter::Emitter()
 {
 	position = { 0.0f,0.0f,0.0f };
 	isActive = true;
+
+	plane = app->scene->CreateGameObject(nullptr, true);
+	plane->SetName("Plane");
+	plane->CreateComponent(ComponentType::MESH_RENDERER);
+	plane->CreateComponent(ComponentType::BILLBOARD);
+	//planeMesh = std::shared_ptr<Mesh>((Mesh*)(plane->GetComponent(ComponentType::MESH_RENDERER)));
+	//Mesh *m = (Mesh*)(plane->GetComponent(ComponentType::MESH_RENDERER));
+	//std::shared_ptr<Mesh> planeMesh = std::static_pointer_cast<Mesh>(ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx")));
+
+	//if (planeMesh != nullptr) 
+	// {
+		//planeMesh =
+		//planeMesh = std::static_pointer_cast<Mesh>(ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx")));
+	//}
+		// = LoadResource(std::string("Assets/Resources/plane.fbx"));
 
 	particleReference = new Particle();
 }
@@ -46,6 +63,7 @@ void Emitter::Emit()
 
 void Emitter::Render()
 {
+
 }
 
 void Emitter::UpdateParticle(float dt)

@@ -13,6 +13,7 @@ enum class ComponentType
 	MATERIAL,
 	CAMERA,
 	PARTICLE_SYSTEM,
+	BILLBOARD,
 };
 
 class Component

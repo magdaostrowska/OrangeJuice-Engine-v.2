@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameObject.h"
 #include "Component.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"

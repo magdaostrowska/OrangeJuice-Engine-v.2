@@ -268,6 +268,10 @@ Component* GameObject::CreateComponent(ComponentType type)
 		transform = (TransformComponent*)GetComponent(ComponentType::TRANSFORM);
 		component = new ParticleSystem(this, transform);
 		break;
+	case ComponentType::BILLBOARD:
+		transform = (TransformComponent*)GetComponent(ComponentType::TRANSFORM);
+		component = new BillboardParticle(this, ComponentType::BILLBOARD, transform);
+		break;
 	}
 
 	if (component != nullptr)

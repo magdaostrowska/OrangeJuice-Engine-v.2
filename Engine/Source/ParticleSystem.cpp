@@ -13,7 +13,8 @@ ParticleSystem::ParticleSystem(GameObject* own, TransformComponent* trans, uint 
     type = ComponentType::PARTICLE_SYSTEM;
     transform = trans;
     //localToGlobalMatrix = Mat4x4(1, 1, 1, 1);
-    textureId = 0;Resize(numParticles);
+    textureId = 0;
+    Resize(numParticles);
     
 }
 

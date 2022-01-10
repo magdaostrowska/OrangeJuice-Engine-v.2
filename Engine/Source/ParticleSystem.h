@@ -51,6 +51,8 @@ private:
 	std::vector<Particle> particlesBuffer;
 	std::vector<Emitter*> emitters;
 
+	//Particle* particleReference;
+
 	VertexBuffer vertexBuffer;
 	uint textureId;
 

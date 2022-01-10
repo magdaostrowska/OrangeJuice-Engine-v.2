@@ -267,6 +267,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Source\ParticleSystem.h" />
     <ClInclude Include="Engine\Source\Emitter.h" />
+    <ClInclude Include="Engine\Source\BillboardParticle.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Source\ModuleCamera3D.cpp">
@@ -436,6 +439,9 @@
     </ClCompile>
     <ClCompile Include="Engine\Source\ParticleSystem.cpp" />
     <ClCompile Include="Engine\Source\Emitter.cpp" />
+    <ClCompile Include="Engine\Source\BillboardParticle.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OrangeJuice Engine.rc" />

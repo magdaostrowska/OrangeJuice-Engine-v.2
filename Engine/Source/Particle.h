@@ -40,7 +40,7 @@ public:
 	float lifeTime, timeLeft;
 	float3 rotation, acceleration;
 	float3 size; // float startSize, endSize
-	float3 velocity, position;
+	float3 velocity, position, direction;
 	Vec3 color;
 	//Vec3 startColor, endColor;
 	//Vec4 color4, startColor4, endColor4;

@@ -39,7 +39,8 @@ bool ModuleScene::Start()
 	ResourceManager::GetInstance()->ImportResourcesFromLibrary();
 	ResourceManager::GetInstance()->ImportAllResources();
 	ImportPrimitives();
-	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"));
+	//ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"));
+	//ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx"));
 	smoke = CreateGameObject(root);
 	smoke->SetName("Smoke");
 	smoke->CreateComponent(ComponentType::PARTICLE_SYSTEM);

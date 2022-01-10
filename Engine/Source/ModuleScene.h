@@ -2,6 +2,7 @@
 
 #include "Module.h"
 #include "GameObject.h"
+#include "Globals.h"
 #include "Quadtree.h"
 #include "GameTimer.h"
 #include <vector>

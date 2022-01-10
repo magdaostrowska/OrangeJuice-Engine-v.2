@@ -31,6 +31,7 @@ public:
 
 	void SetTransform(float3 pos, Quat rot, float3 sca);
 	void SetTransform(float4x4 trMatrix);
+	void SetRotation(Quat rot);
 
 	bool OnLoad(JsonParsing& node) override;
 	bool OnSave(JsonParsing& node, JSON_Array* array) override;
@@ -49,7 +50,7 @@ public:
 	bool DrawVec3(std::string& name, float3& vec);
 	void ShowTransformationInfo();
 
-private:
+public:
 	float3 position;
 	Quat rotation;
 	float3 rotationEditor;

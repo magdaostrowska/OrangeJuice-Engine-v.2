@@ -87,6 +87,24 @@ void Mesh::Draw(bool& verticesNormals, bool& faceNormals, float3& colorNormal, f
 	if (vbo != nullptr) vbo->Unbind();
 }
 
+void Mesh::Draw()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, tbo);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
 void Mesh::ShowVertexNormals(float3& colorNormal, float &normalLength)
 {
 	if (!normals.empty())
