@@ -5,18 +5,22 @@
 Emitter::Emitter()
 {
 	position = { 0.0f,0.0f,0.0f };
+	maxParticles = 100;
 	isActive = true;
-
-	plane = app->scene->CreateGameObject(app->scene->smoke, true);
-	plane->SetName("Plane");
-	plane->CreateComponent(ComponentType::MESH_RENDERER);
-	plane->CreateComponent(ComponentType::BILLBOARD);
-	plane->CreateComponent(ComponentType::PARTICLE_SYSTEM);
-	planeTransform = (TransformComponent*)plane->GetComponent(ComponentType::TRANSFORM);
-	
-	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx"), *plane);
+	planes.resize(maxParticles);
 
 	particleReference = new Particle();
+
+	for (int i = 0; i < maxParticles; i++)
+	{
+		planes[i] = app->scene->CreateGameObject(app->scene->smoke, true);
+		planes[i]->SetName("Plane");
+		planes[i]->CreateComponent(ComponentType::MESH_RENDERER);
+		planes[i]->CreateComponent(ComponentType::BILLBOARD);
+		planes[i]->CreateComponent(ComponentType::PARTICLE_SYSTEM);
+
+		ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx"), *planes[i]);
+	}
 }
 
 Emitter::~Emitter()
@@ -51,23 +55,33 @@ void Emitter::Emit()
 	}
 
 	// Create new particle
-	if (particlesBuff.size() < 200) {
-		Particle particle = new Particle(particleReference);
-		particlesBuff.push_back(particle);
+	currTimer -= 0.5f;
+	if (currTimer <= 0.0f) {
+		if (particlesBuff.size() < maxParticles) {
+			Particle particle = new Particle(particleReference);
+			particlesBuff.push_back(particle);
+		}
+		currTimer = timer;
 	}
+	
 }
 
 void Emitter::Render()
 {
 	for (int i = 0; i < particlesBuff.size(); i++) {
-		planeTransform->SetTransform(particlesBuff[i].position, Quat::identity, particlesBuff[i].size);
-		//plane->Draw();
+
+		BillboardParticle* planeBillboard = (BillboardParticle*)planes[i]->GetComponent(ComponentType::BILLBOARD);
+		if (planeBillboard != nullptr)
+		{
+			// TODO - RotateToFaceCamera() method
+		}
+
+		TransformComponent* planeTransform = (TransformComponent*)planes[i]->GetComponent(ComponentType::TRANSFORM);
+		if (planeTransform != nullptr)
+		{
+			planeTransform->SetTransform(particlesBuff[i].position, Quat::identity, particlesBuff[i].size);
+		}
 	}
-	/*if (particlesBuff.size() > 0) {
-		DEBUG_LOG("Particle 0 posY: ", particlesBuff[0].position.y);
-		planeTransform->SetTransform(particlesBuff[0].position, Quat::identity, particlesBuff[0].size);
-		plane->Draw();
-	}*/	
 }
 
 void Emitter::UpdateParticle(float dt)
@@ -81,10 +95,5 @@ void Emitter::Update(float dt)
 {
 	UpdateParticle(dt);
 	Render();
-
-	currTimer -= dt;
-	if (currTimer <= 0.0f) {
-		Emit();
-		currTimer = timer;
-	}	
+	Emit();
 }

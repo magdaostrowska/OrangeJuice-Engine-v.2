@@ -270,7 +270,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::BILLBOARD:
 		transform = (TransformComponent*)GetComponent(ComponentType::TRANSFORM);
-		component = new BillboardParticle(this, ComponentType::BILLBOARD, transform);
+		component = new BillboardParticle(this, transform);
 		break;
 	}
 
