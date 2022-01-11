@@ -26,8 +26,13 @@ public:
 	bool isActive;
 
 	GameObject* plane;
+	TransformComponent* planeTransform;
+	//std::shared_ptr<Mesh> planeMesh;
 	std::shared_ptr<Mesh> planeMesh;
 
 	std::vector<Particle> particlesBuff;
 	Particle* particleReference;
+
+	float timer = 10.0f;
+	float currTimer = 10.0f;
 };

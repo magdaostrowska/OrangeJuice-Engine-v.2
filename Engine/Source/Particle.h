@@ -13,8 +13,8 @@ public:
 
 		rotation = { 0.0f,0.0f,0.0f };
 		acceleration = { 0.0f,0.0f,0.0f };
-		size = { 0.0f,0.0f,0.0f };
-		velocity = { 0.0f,0.0f,0.0f };
+		size = { 1.0f,1.0f,1.0f };
+		velocity = { 0.0f,0.01f,0.0f };
 		position = { 0.0f,0.0f,0.0f };
 		color = { 0, 0, 0 };
 		isActive = true;

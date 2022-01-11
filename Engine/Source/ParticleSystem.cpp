@@ -27,7 +27,7 @@ void ParticleSystem::EmitParticles()
 {
     for (size_t i = 0; i < emitters.size(); i++)
     {
-        emitters[i]->Emit();
+        //emitters[i]->Emit();
     }
 }
 
@@ -78,7 +78,7 @@ void ParticleSystem::SetEmitter(Emitter* emitter)
 
 void ParticleSystem::Render()
 {
-    if (vertexBuffer.size() == 0) 
+    /*if (vertexBuffer.size() == 0)
         return;
 
     glDisable(GL_DEPTH_TEST);           // Disables Depth Testing
@@ -105,7 +105,7 @@ void ParticleSystem::Render()
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
 
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);*/
 }
 
 bool ParticleSystem::Update(float dt) 
@@ -113,11 +113,6 @@ bool ParticleSystem::Update(float dt)
     for (int i = 0; i < emitters.size(); i++) {
         emitters[i]->Update(dt);
     }
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                   // Clear the color buffer, and the depth buffer.
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
 
     //g_Camera.ApplyViewTransform();
 
