@@ -25,6 +25,11 @@ void Model::Load()
 	ModelImporter::LoadModel(libraryPath);
 }
 
+void Model::LoadParticle(GameObject& particle)
+{
+	ModelImporter::LoadParticleModel(libraryPath, particle);
+}
+
 void Model::DrawOnEditor()
 {
 	if (ImGui::CollapsingHeader("Model Import Settings"))

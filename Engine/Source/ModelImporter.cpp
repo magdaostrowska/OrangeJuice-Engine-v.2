@@ -127,7 +127,33 @@ void ModelImporter::LoadModel(std::string& path)
 		//go->SetName(name.c_str());
 
 		name = "Childs" + name;
-		CreatingModel(json, json.GetJsonArray(json.ValueToObject(json.GetRootValue()), name.c_str()), app->scene->GetRoot());
+		GameObject* nullGo = app->scene->CreateGameObject(app->scene->GetRoot(), false);
+		CreatingModel(json, json.GetJsonArray(json.ValueToObject(json.GetRootValue()), name.c_str()), app->scene->GetRoot(), *nullGo);
+		delete nullGo;
+	}
+
+	RELEASE_ARRAY(buffer);
+}
+
+void ModelImporter::LoadParticleModel(std::string& path, GameObject& particle)
+{
+	RG_PROFILING_FUNCTION("Loading Model");
+	char* buffer = nullptr;
+
+	app->fs->Load(path.c_str(), &buffer);
+
+	if (buffer != nullptr)
+	{
+		JsonParsing json = JsonParsing(buffer);
+
+		json = json.GetChild(json.GetRootValue(), "Model");
+
+		//GameObject* go = new GameObject();
+		std::string name = json.GetJsonString("Name");
+		//go->SetName(name.c_str());
+
+		name = "Childs" + name;
+		CreatingModel(json, json.GetJsonArray(json.ValueToObject(json.GetRootValue()), name.c_str()), app->scene->GetRoot(), particle);
 	}
 
 	RELEASE_ARRAY(buffer);
@@ -225,15 +251,18 @@ void ModelImporter::ReProcessNode(aiNode* node, const aiScene* scene, JsonParsin
 	}
 }
 
-void ModelImporter::CreatingModel(JsonParsing& json, JSON_Array* array, GameObject* go)
+void ModelImporter::CreatingModel(JsonParsing& json, JSON_Array* array, GameObject* go, GameObject& particle)
 {
 	size_t size = json.GetJsonArrayCount(array);
 	for (int i = 0; i < size; ++i)
 	{
 		GameObject* newGo = new GameObject();
 		TransformComponent* transform = (TransformComponent*)newGo->CreateComponent(ComponentType::TRANSFORM);
-		newGo->SetParent(go);
-		go->AddChild(newGo);
+		ParticleSystem* particleCom = (ParticleSystem*)particle.GetComponent(ComponentType::PARTICLE_SYSTEM);
+		if (particleCom == nullptr) {
+			newGo->SetParent(go);
+			go->AddChild(newGo);
+		}
 
 		JsonParsing parsing = json.GetJsonArrayValue(array, i);
 		std::string name = parsing.GetJsonString("Name");
@@ -262,6 +291,13 @@ void ModelImporter::CreatingModel(JsonParsing& json, JSON_Array* array, GameObje
 				app->fs->GetFilenameWithoutExtension(path);
 				path = path.substr(path.find_last_of("_") + 1, path.length());
 				mesh->SetMesh(ResourceManager::GetInstance()->LoadResource(std::stoll(path)));
+				
+
+				MeshComponent* particleMesh = (MeshComponent*)particle.GetComponent(ComponentType::MESH_RENDERER);
+				if (particleMesh != nullptr)
+				{
+					particleMesh->SetMesh(ResourceManager::GetInstance()->LoadResource(std::stoll(path)));
+				}
 				break;
 			}
 			case ComponentType::MATERIAL:
@@ -277,7 +313,7 @@ void ModelImporter::CreatingModel(JsonParsing& json, JSON_Array* array, GameObje
 		}
 
 		name = "Childs" + name;
-		CreatingModel(parsing, parsing.GetJsonArray(parsing.ValueToObject(parsing.GetRootValue()), name.c_str()), newGo);
+		CreatingModel(parsing, parsing.GetJsonArray(parsing.ValueToObject(parsing.GetRootValue()), name.c_str()), newGo, particle);
 	}
 }
 

@@ -2,6 +2,7 @@
 
 #include "Resource.h"
 #include <vector>
+#include "GameObject.h"
 
 typedef unsigned int uint;
 
@@ -26,6 +27,7 @@ public:
 	~Model();
 
 	void Load() override;
+	void LoadParticle(GameObject& particle);
 
 	void DrawOnEditor() override;
 

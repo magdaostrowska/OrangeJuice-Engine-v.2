@@ -6,7 +6,7 @@
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postProcess.h"
-
+#include "ParticleSystem.h"
 #include "JsonParsing.h"
 
 class GameObject;
@@ -20,9 +20,10 @@ namespace ModelImporter
 	void ImportModel(std::string& path);
 	void SaveModel(std::string& path, JsonParsing& json);
 	void LoadModel(std::string& path);
+	void LoadParticleModel(std::string& path, GameObject& particle);
 
 	void ProcessNode(aiNode* node, const aiScene* scene, JsonParsing& nodeJ, JSON_Array* json, std::string& path, std::vector<uint>& uids);
 	void ReProcessNode(aiNode* node, const aiScene* scene, JsonParsing& nodeJ, JSON_Array* json, std::string& path, ModelParameters& data);
-	void CreatingModel(JsonParsing& json, JSON_Array* array, GameObject* go);
+	void CreatingModel(JsonParsing& json, JSON_Array* array, GameObject* go, GameObject& particle);
 	void CreateMetaModel(std::string& path, ModelParameters& data, std::string& assets, uint uid);
 }

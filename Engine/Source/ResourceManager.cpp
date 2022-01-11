@@ -147,6 +147,20 @@ std::shared_ptr<Resource> ResourceManager::LoadResource(std::string& path)
 	}
 }
 
+void ResourceManager::LoadResource(std::string& path, GameObject& particle)
+{
+	std::map<uint, std::shared_ptr<Resource>>::iterator it;
+	for (it = map.begin(); it != map.end(); ++it)
+	{
+		std::shared_ptr<Resource> res = (*it).second;
+		if (res->GetAssetsPath() == path)
+		{
+			std::shared_ptr<Model> model = std::static_pointer_cast<Model>(res);
+			model->LoadParticle(particle);
+		}
+	}
+}
+
 bool ResourceManager::CheckResource(std::string& path)
 {
 	std::map<uint, std::shared_ptr<Resource>>::iterator it;

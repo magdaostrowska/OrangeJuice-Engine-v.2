@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <memory>
+#include "GameObject.h"
 
 class Texture;
 class Mesh;
@@ -25,6 +26,7 @@ public:
 
 	std::shared_ptr<Resource> LoadResource(uint uid);
 	std::shared_ptr<Resource> LoadResource(std::string& path);
+	void LoadResource(std::string& path, GameObject& particle);
 
 	bool CheckResource(std::string& path);
 	void ImportResourcesFromLibrary();

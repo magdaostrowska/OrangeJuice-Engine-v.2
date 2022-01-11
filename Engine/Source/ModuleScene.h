@@ -87,6 +87,7 @@ public:
 	GameObject* smoke;
 
 private:
+
 	GameObject* root;
 	Quadtree qTree;
 	GameState gameState;

@@ -7,34 +7,14 @@ Emitter::Emitter()
 	position = { 0.0f,0.0f,0.0f };
 	isActive = true;
 
-	plane = app->scene->CreateGameObject(nullptr, true);
+	plane = app->scene->CreateGameObject(app->scene->smoke, true);
 	plane->SetName("Plane");
 	plane->CreateComponent(ComponentType::MESH_RENDERER);
 	plane->CreateComponent(ComponentType::BILLBOARD);
+	plane->CreateComponent(ComponentType::PARTICLE_SYSTEM);
 	planeTransform = (TransformComponent*)plane->GetComponent(ComponentType::TRANSFORM);
-	//planeMesh = plane->GetComponent(ComponentType::MESH_RENDERER);
-	/*std::string meshName;
-	std::string assetsPath("Assets/Resources/plane.fbx");
-	uint planeUID = ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, assetsPath, meshName);
-
-	//planeMesh = ResourceManager::GetInstance()->GetResource(planeUID);
-	planeMesh  = std::static_pointer_cast<Mesh>(ResourceManager::GetInstance()->GetResource(planeUID));
-	MeshComponent* mesh = (MeshComponent*)plane->GetComponent(ComponentType::MESH_RENDERER);
-	mesh->SetMesh(planeMesh);*/
-	//planeMesh->Reimport(parameters);
 	
-	//planeMesh->shared_from_this().
-
-	//planeMesh = std::shared_ptr<Mesh>((Mesh*)(plane->GetComponent(ComponentType::MESH_RENDERER)));
-	//Mesh *m = (Mesh*)(plane->GetComponent(ComponentType::MESH_RENDERER));
-	//std::shared_ptr<Mesh> planeMesh = std::static_pointer_cast<Mesh>(ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx")));
-
-	//if (planeMesh != nullptr) 
-	// {
-		//planeMesh =
-		//planeMesh = std::static_pointer_cast<Mesh>(ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx")));
-	//}
-		// = LoadResource(std::string("Assets/Resources/plane.fbx"));
+	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx"), *plane);
 
 	particleReference = new Particle();
 }
