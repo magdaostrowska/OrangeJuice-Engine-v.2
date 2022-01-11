@@ -15,7 +15,7 @@ public:
 
 	virtual void EmitParticle(Particle& particle);
 
-	void Emit();
+	void Emit(float dt);
 	void Render();
 	void UpdateParticle(float dt);
 	void Update(float dt);
@@ -30,8 +30,8 @@ public:
 	Particle* particleReference;
 
 	int maxParticles;
-	int particlesPerSecond;
+	float particlesPerSecond;
 
-	float timer = 10.0f;
-	float currTimer = 10.0f;
+	float timer;
+	float currTimer;
 };

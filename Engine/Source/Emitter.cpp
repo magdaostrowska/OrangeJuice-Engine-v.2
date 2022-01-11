@@ -6,10 +6,14 @@ Emitter::Emitter()
 {
 	position = { 0.0f,0.0f,0.0f };
 	maxParticles = 100;
+	particlesPerSecond = 3;
 	isActive = true;
 	planes.resize(maxParticles);
 
 	particleReference = new Particle();
+
+	timer = 1/particlesPerSecond;
+	currTimer = timer;
 
 	for (int i = 0; i < maxParticles; i++)
 	{
@@ -31,7 +35,7 @@ void Emitter::EmitParticle(Particle& particle)
 {
 }
 
-void Emitter::Emit()
+void Emitter::Emit(float dt)
 {
 	for (int i = 0; i < particlesBuff.size(); i++) {
 
@@ -48,14 +52,13 @@ void Emitter::Emit()
 			particlesBuff[i].size = particleReference->size;
 			particlesBuff[i].color = particleReference->color;
 			particlesBuff[i].lifeTime = particleReference->lifeTime;
-			particlesBuff[i].timeLeft = particleReference->timeLeft;
 
 			return;
 		}
 	}
 
 	// Create new particle
-	currTimer -= 0.5f;
+	currTimer -= dt;
 	if (currTimer <= 0.0f) {
 		if (particlesBuff.size() < maxParticles) {
 			Particle particle = new Particle(particleReference);
@@ -87,7 +90,13 @@ void Emitter::Render()
 void Emitter::UpdateParticle(float dt)
 {
 	for (int i = 0; i < particlesBuff.size(); i++) {
+		
+		particlesBuff[i].lifeTime -= dt;
 		particlesBuff[i].position += particlesBuff[i].velocity;
+		particlesBuff[i].velocity += particlesBuff[i].acceleration;	
+
+		if (particlesBuff[i].lifeTime <= 0)
+			particlesBuff[i].isActive = false;
 	}
 }
 
@@ -95,5 +104,5 @@ void Emitter::Update(float dt)
 {
 	UpdateParticle(dt);
 	Render();
-	Emit();
+	Emit(dt);
 }
