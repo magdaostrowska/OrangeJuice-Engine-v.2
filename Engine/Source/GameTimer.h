@@ -9,6 +9,7 @@ public:
 	~GameTimer();
 
 	void Start();
+	void Stop();
 	void FinishUpdate();
 
 	inline void SetDesiredCappedMs(int miliseconds) { cappedMs = miliseconds; }
@@ -26,7 +27,7 @@ public:
 	void SaveConfig(JsonParsing& node);
 private:
 	// Normal timings
-	int timer;
+	int started_at, stopped_at;
 	float deltaTime;
 	int frameCounter;
 	int lastFrameMs;

@@ -3,7 +3,7 @@
 #include "SDL\include\SDL.h"
 
 
-GameTimer::GameTimer() : gameTimer(0.0f), gameStarted(false), deltaTime(0.016f), frameCounter(0), timer(0.0f), lastFrameMs(0.0f), cappedMs(0.0f)
+GameTimer::GameTimer() : gameTimer(0.0f), gameStarted(false), deltaTime(0.016f), frameCounter(0), started_at(0.0f), stopped_at(0.0f), lastFrameMs(0.0f), cappedMs(0.0f)
 {
 	gameTimer = SDL_GetTicks();
 }
@@ -16,7 +16,12 @@ void GameTimer::Start()
 {
 	frameCounter++;
 	/*deltaTime = (float)GetTime() / 1000.0f;*/
-	timer = SDL_GetTicks();
+	started_at = SDL_GetTicks();
+}
+
+void GameTimer::Stop()
+{
+	stopped_at = SDL_GetTicks();
 }
 
 void GameTimer::FinishUpdate()
@@ -31,7 +36,7 @@ int GameTimer::GetEngineTimeStartup() const
 
 int GameTimer::GetTime() const
 {
-	return (SDL_GetTicks() - timer);
+	return (SDL_GetTicks() - started_at);
 }
 
 void GameTimer::ResetTimer()

@@ -2,6 +2,8 @@
 #include "Particle.h"
 #include "Globals.h"
 #include "Component.h"
+#include "GameTimer.h"
+
 
 #include "MathGeoLib/src/MathGeoLib.h"
 #include <vector>
@@ -21,40 +23,18 @@ public:
 	virtual void Render();
 	bool Update(float dt) override;
 	void OnEditor() override;
-
-	void Resize(uint particlesNumber);
-
-public:
-
-	// A vertex for the particle
-	struct Vertex
-	{
-		Vertex(): 
-			pos(0.0f), 
-			diff(0), 
-			tex(0)
-		{}
-
-		float3   pos;      // Vertex position
-		Vec3   diff;  // Diffuse color
-		Vec2   tex;     // Texture coordinate
-	};
-	typedef std::vector<Vertex> VertexBuffer;
-
-protected:
-
-	void EmitParticles();
-	void BuildVertex();
+	
+	void Play();
+	void Stop();
 
 private:
 
-	std::vector<Particle> particlesBuffer;
 	std::vector<Emitter*> emitters;
 
-	//Particle* particleReference;
-
-	VertexBuffer vertexBuffer;
-	uint textureId;
+	bool isActive;
+	bool looping = false;
+	float maxDuration = 0.0f;
+	GameTimer timer;
 
 	TransformComponent* transform;
 };
