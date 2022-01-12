@@ -1,6 +1,7 @@
 #pragma once
 
 #include "JsonParsing.h"
+#include <SDL/include/SDL_timer.h>
 
 class GameTimer
 {
@@ -21,11 +22,16 @@ public:
 	inline float GetDeltaTime() const { return deltaTime; }
 	inline int GetFps() const { return (1.0f / ((float)cappedMs) * 1000.0f); }
 
+	Uint32 ReadTime();
+
 	void ResetTimer();
 
 	void ReadConfig(JsonParsing& node);
 	void SaveConfig(JsonParsing& node);
 private:
+
+	bool isRunning;
+
 	// Normal timings
 	int started_at, stopped_at;
 	float deltaTime;

@@ -15,6 +15,8 @@ Emitter::Emitter()
 	timer = 1/particlesPerSecond;
 	currTimer = timer;
 
+	texture = nullptr;
+
 	for (int i = 0; i < maxParticles; i++)
 	{
 		planes[i] = app->scene->CreateGameObject(app->scene->smoke, true);
@@ -105,4 +107,64 @@ void Emitter::Update(float dt)
 	UpdateParticle(dt);
 	Render();
 	Emit(dt);
+}
+
+void Emitter::OnEditor(int emitterIndex)
+{
+	std::string suffixLabel = "##";
+	suffixLabel += emitterIndex;
+	std::string guiName = "Emitter " + suffixLabel;
+
+	if (ImGui::CollapsingHeader(guiName.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		strcpy(charsOfName, guiName.c_str());
+		guiName = suffixLabel + "Name";
+		guiName = "Delelte Emitter" + suffixLabel;
+		if (ImGui::Button(guiName.c_str()))
+		{
+			toDelelte = true;
+		}
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Indent();
+
+		guiName = "Particle Lifetime" + suffixLabel;
+		if (ImGui::DragFloat(guiName.c_str(), &particleReference->lifeTime)){}
+			//CalculatePoolSize();
+
+		guiName = "Particles per Second" + suffixLabel;
+		if (ImGui::DragFloat(guiName.c_str(), &particlesPerSecond))
+			SetParticlesPerSecond(particlesPerSecond);
+
+		float size[3] = { particleReference->size.x, particleReference->size.y, particleReference->size.z };
+
+		guiName = "Size" + suffixLabel;
+		if (ImGui::DragFloat(guiName.c_str(), size))
+		{
+			particleReference->size.x = size[0];
+			particleReference->size.y = size[1];
+			particleReference->size.z = size[2];
+		}
+
+		float color[4] = { particleReference->color.r, particleReference->color.g, particleReference->color.b, particleReference->color.a };
+
+		guiName = "Color (RGBA)" + suffixLabel;
+		if (ImGui::ColorPicker3(guiName.c_str(), color))
+		{
+			particleReference->color.r = color[0];
+			particleReference->color.g = color[1];
+			particleReference->color.b = color[2];
+			particleReference->color.a = color[3];
+		}
+
+		//TODO: Texture part
+
+	}
+}
+
+void Emitter::SetParticlesPerSecond(float particlesPerSec)
+{
+	particlesPerSecond = particlesPerSec;
 }

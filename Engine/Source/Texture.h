@@ -43,8 +43,10 @@ public:
 private:
 	void Reimport();
 
-private:
+public:
 	unsigned int id;
+
+private:
 	int width;
 	int height;
 

@@ -56,6 +56,25 @@ void ParticleSystem::OnEditor()
                 Play();
         }
 
+        ImGui::SameLine();
+        ImGui::Text("Played for: %.2f", timer.ReadTime() * 0.001f);
+
+        ImGui::Checkbox("Looping", &looping);
+        ImGui::SliderFloat("Duration", &maxDuration, 0.0f, 10.0f);
+
+        ImGui::Spacing();
+        std::string guiName = "";
+        std::string suffixLabel = "";
+        for (int i = 0; i < emitters.size(); ++i)
+        {
+            suffixLabel = "##";
+            suffixLabel += i;
+            ImGui::Separator();
+            ImGui::Spacing();
+
+            emitters[i]->OnEditor(i);
+        }
+
         ImGui::Separator();
     }
 }
