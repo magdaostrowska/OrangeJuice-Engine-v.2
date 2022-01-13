@@ -48,6 +48,14 @@ bool ModuleScene::Start()
 	Emitter* emitter = new Emitter();
 	test->SetEmitter(emitter);
 
+	MaterialComponent* material = (MaterialComponent*)smoke->GetComponent(ComponentType::MATERIAL);
+	if (material != nullptr)
+	{
+	
+		//ResourceManager::GetInstance()->IsTextureLoaded("Assets/Resources/smoke.png");
+		//material->SetTexture(ResourceManager::GetInstance()->IsTextureLoaded("Assets/Resources/smoke.png"));
+	}
+
 	return true;
 }
 
@@ -111,7 +119,6 @@ bool ModuleScene::Update(float dt)
 			for (int i = 0; i < go->GetChilds().size(); ++i)
 				objects.push(go->GetChilds()[i]);
 		}
-
 		resetQuadtree = false;
 	}
 
@@ -149,12 +156,6 @@ bool ModuleScene::Draw()
 				stack.push(go->GetChilds()[i]);
 		}
 	}
-	//for (int i = 0; i < root->GetChilds().size(); ++i)
-	//{
-	//	GameObject* go = root->GetChilds()[i];
-	//	if (go->GetActive())
-	//		go->Draw();
-	//}
 
 	return true;
 }
@@ -162,7 +163,6 @@ bool ModuleScene::Draw()
 bool ModuleScene::CleanUp()
 {
 	RELEASE(root);
-
 	return true;
 }
 

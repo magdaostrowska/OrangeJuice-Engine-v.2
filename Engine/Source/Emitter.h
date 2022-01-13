@@ -1,11 +1,9 @@
 #pragma once
-#include "MathGeoLib/src/Geometry/Frustum.h"
 #include "Particle.h"
 #include "GameObject.h"
 #include "Resource.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "Texture.h"
 #include "MathGeoLib/src/Geometry/Frustum.h"
 #include <string>
 
@@ -16,7 +14,6 @@ public:
 	~Emitter();
 
 	virtual void EmitParticle(Particle& particle);
-
 	void Emit(float dt);
 	void Render();
 	void UpdateParticle(float dt);
@@ -28,22 +25,20 @@ public:
 public:
 
 	float3 position;
+	int maxParticles;
+	float particlesPerSecond;
 	bool isActive;
+	bool toDelete;
 
-	std::vector<GameObject*> planes;
+	//std::vector<GameObject*> planes;
 	std::vector<Particle> particlesBuff;
 	Particle* particleReference;
 
-	int maxParticles;
-	float particlesPerSecond;
-
 	float timer;
 	float currTimer;
-
-	bool toDelelte;
-
+	
 private:
 
 	char charsOfName[50];
-	Texture* texture;
+	std::shared_ptr<Texture> tex;
 };

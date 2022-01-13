@@ -16,7 +16,6 @@ MaterialComponent::MaterialComponent(GameObject* own) : diff(nullptr), showTexMe
 	type = ComponentType::MATERIAL;
 	owner = own;
 	checker = false;
-	
 	active = true;
 }
 

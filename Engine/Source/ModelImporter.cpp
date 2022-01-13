@@ -258,8 +258,8 @@ void ModelImporter::CreatingModel(JsonParsing& json, JSON_Array* array, GameObje
 	{
 		GameObject* newGo = new GameObject();
 		TransformComponent* transform = (TransformComponent*)newGo->CreateComponent(ComponentType::TRANSFORM);
-		ParticleSystem* particleCom = (ParticleSystem*)particle.GetComponent(ComponentType::PARTICLE_SYSTEM);
-		if (particleCom == nullptr) {
+		BillboardParticle* particleBillboard = (BillboardParticle*)particle.GetComponent(ComponentType::BILLBOARD);
+		if (particleBillboard == nullptr) {
 			newGo->SetParent(go);
 			go->AddChild(newGo);
 		}

@@ -1,11 +1,11 @@
 #include "ParticleSystem.h"
+#include "Globals.h"
 #include "Emitter.h"
 #include "CameraComponent.h"
 #include "TransformComponent.h"
 #include "GameObject.h"
 
 #include <cassert>
-#include "Globals.h"
 #include <GL/glew.h>
 
 ParticleSystem::ParticleSystem(GameObject* own, TransformComponent* trans, uint numParticles)
@@ -85,7 +85,7 @@ void ParticleSystem::Play()
     isActive = true;
     for (int i = 0; i < emitters.size(); ++i)
     {
-        // TODO - emitters[i]->RestartEmitter();
+        // TODO: emitters[i]->RestartEmitter();
     }
 }
 

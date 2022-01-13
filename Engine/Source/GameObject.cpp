@@ -23,6 +23,17 @@ GameObject::GameObject() : active(true), parent(nullptr), name("Game Object"), n
 	uuid = lcg.IntFast();
 }
 
+//GameObject::GameObject(GameObject* go) : active(true), parent(nullptr), name("Game Object"), newComponent(false), index(nullptr), vertex(nullptr), colliders(false), staticObj(true)
+//{
+//	globalAabb.SetNegativeInfinity();
+//	LCG lcg;
+//	uuid = lcg.IntFast();
+//
+//	for (int i = 0; i < go->components.size(); i++) {
+//		CreateComponent(go->components[i]->GetType());
+//	}
+//}
+
 GameObject::~GameObject()
 {
 	for (int i = 0; i < components.size(); ++i)

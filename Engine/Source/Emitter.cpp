@@ -8,25 +8,11 @@ Emitter::Emitter()
 	maxParticles = 100;
 	particlesPerSecond = 3;
 	isActive = true;
-	planes.resize(maxParticles);
 
 	particleReference = new Particle();
 
 	timer = 1/particlesPerSecond;
 	currTimer = timer;
-
-	texture = nullptr;
-
-	for (int i = 0; i < maxParticles; i++)
-	{
-		planes[i] = app->scene->CreateGameObject(app->scene->smoke, true);
-		planes[i]->SetName("Plane");
-		planes[i]->CreateComponent(ComponentType::MESH_RENDERER);
-		planes[i]->CreateComponent(ComponentType::BILLBOARD);
-		planes[i]->CreateComponent(ComponentType::PARTICLE_SYSTEM);
-
-		ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx"), *planes[i]);
-	}
 }
 
 Emitter::~Emitter()
@@ -75,17 +61,19 @@ void Emitter::Render()
 {
 	for (int i = 0; i < particlesBuff.size(); i++) {
 
-		BillboardParticle* planeBillboard = (BillboardParticle*)planes[i]->GetComponent(ComponentType::BILLBOARD);
+		BillboardParticle* planeBillboard = (BillboardParticle*)particlesBuff[i].plane->GetComponent(ComponentType::BILLBOARD);
 		if (planeBillboard != nullptr)
 		{
-			// TODO - RotateToFaceCamera() method
+			// TODO: RotateToFaceCamera() method
 		}
 
-		TransformComponent* planeTransform = (TransformComponent*)planes[i]->GetComponent(ComponentType::TRANSFORM);
+		TransformComponent* planeTransform = (TransformComponent*)particlesBuff[i].plane->GetComponent(ComponentType::TRANSFORM);
 		if (planeTransform != nullptr)
 		{
 			planeTransform->SetTransform(particlesBuff[i].position, Quat::identity, particlesBuff[i].size);
+			
 		}
+
 	}
 }
 
@@ -119,10 +107,10 @@ void Emitter::OnEditor(int emitterIndex)
 	{
 		strcpy(charsOfName, guiName.c_str());
 		guiName = suffixLabel + "Name";
-		guiName = "Delelte Emitter" + suffixLabel;
+		guiName = "Delete Emitter" + suffixLabel;
 		if (ImGui::Button(guiName.c_str()))
 		{
-			toDelelte = true;
+			toDelete = true;
 		}
 
 		ImGui::Spacing();
@@ -138,14 +126,13 @@ void Emitter::OnEditor(int emitterIndex)
 		if (ImGui::DragFloat(guiName.c_str(), &particlesPerSecond))
 			SetParticlesPerSecond(particlesPerSecond);
 
-		float size[3] = { particleReference->size.x, particleReference->size.y, particleReference->size.z };
+		float size[2] = { particleReference->size.x, particleReference->size.z };
 
 		guiName = "Size" + suffixLabel;
-		if (ImGui::DragFloat(guiName.c_str(), size))
+		if (ImGui::DragFloat2(guiName.c_str(), size))
 		{
 			particleReference->size.x = size[0];
-			particleReference->size.y = size[1];
-			particleReference->size.z = size[2];
+			particleReference->size.z = size[1];
 		}
 
 		float color[4] = { particleReference->color.r, particleReference->color.g, particleReference->color.b, particleReference->color.a };

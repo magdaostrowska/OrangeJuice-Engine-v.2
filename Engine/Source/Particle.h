@@ -1,5 +1,8 @@
 #pragma once
 #include "glmath.h"
+#include "GameObject.h"
+#include "ResourceManager.h"
+#include "ModuleScene.h"
 #include "MathGeoLib/src/Geometry/Frustum.h"
 
 class Particle {
@@ -16,6 +19,12 @@ public:
 		position = { 0.0f,0.0f,0.0f };
 		color = { 0, 0, 0 };
 		isActive = true;
+		plane = app->scene->CreateGameObject(app->scene->smoke, true);
+		plane->SetName("Particle");
+		plane->CreateComponent(ComponentType::MESH_RENDERER);
+		plane->CreateComponent(ComponentType::BILLBOARD);
+
+		ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx"), *plane);
 	}
 
 	// This constructor should be used by default
@@ -29,6 +38,13 @@ public:
 		position = particleReference->position;
 		color = particleReference->color;
 		isActive = particleReference->isActive;
+
+		plane = app->scene->CreateGameObject(app->scene->smoke, true);
+		plane->SetName("Particle");
+		plane->CreateComponent(ComponentType::MESH_RENDERER);
+		plane->CreateComponent(ComponentType::BILLBOARD);
+
+		ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx"), *plane);
 	}
 
 public:
@@ -41,4 +57,5 @@ public:
 	//Vec3 startColor, endColor;
 	//Vec4 color4, startColor4, endColor4;
 	bool isActive;
+	GameObject* plane;
 };
