@@ -8,6 +8,7 @@
 #include "ParticleEffect.h"
 #include "ParticleEffect_Velocity.h"
 #include "ParticleEffect_Force.h"
+#include "ParticleEffect_Size.h"
 #include "MathGeoLib/src/Geometry/Frustum.h"
 #include <string>
 

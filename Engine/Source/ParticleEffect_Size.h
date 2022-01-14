@@ -12,6 +12,5 @@ public:
 
 public:
 
-	bool toDelete;
-
+	float2 startSize, endSize;
 };

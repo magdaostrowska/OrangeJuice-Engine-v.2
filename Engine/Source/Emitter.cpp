@@ -5,7 +5,7 @@
 Emitter::Emitter()
 {
 	maxParticles = 20;
-	particlesPerSecond = 1;
+	particlesPerSecond = 3;
 	isActive = true;
 
 	particleReference = new Particle();
@@ -151,13 +151,13 @@ void Emitter::OnEditor(int emitterIndex)
 		if (ImGui::DragFloat(guiName.c_str(), &particlesPerSecond))
 			SetParticlesPerSecond(particlesPerSecond);
 
-		float size[2] = { particleReference->size.x, particleReference->size.z };
+		float size[2] = { particleReference->size.x, particleReference->size.y };
 
 		guiName = "Size" + suffixLabel;
 		if (ImGui::DragFloat2(guiName.c_str(), size))
 		{
 			particleReference->size.x = size[0];
-			particleReference->size.z = size[1];
+			particleReference->size.y = size[1];
 		}
 
 		float color[4] = { particleReference->color.r, particleReference->color.g, particleReference->color.b, particleReference->color.a };
@@ -198,7 +198,7 @@ void Emitter::OnEditor(int emitterIndex)
 			ImGui::Image((ImTextureID)0, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
 		}
 
-		for (int i = (int)ParticleEffectType::NO_TYPE + 1; i < (int)ParticleEffectType::ACCELERATION_OVER_LIFETIME; i++)
+		for (int i = (int)ParticleEffectType::NO_TYPE + 1; i <= (int)ParticleEffectType::ACCELERATION_OVER_LIFETIME; i++)
 		{
 			if (isEffectActive((ParticleEffectType)i))
 			{
@@ -225,7 +225,7 @@ void Emitter::OnEditor(int emitterIndex)
 		textNameDisplay += emitterIndex;
 		if (ImGui::BeginCombo(guiName.c_str(), textNameDisplay.c_str()))
 		{
-			for (int j = (int)ParticleEffectType::NO_TYPE + 1; j < (int)ParticleEffectType::ACCELERATION_OVER_LIFETIME; j++)
+			for (int j = (int)ParticleEffectType::NO_TYPE + 1; j <= (int)ParticleEffectType::ACCELERATION_OVER_LIFETIME; j++)
 			{
 				guiName = (GetNameFromEffect((ParticleEffectType)j)) + suffixLabel;
 
@@ -257,10 +257,14 @@ void Emitter::CreateParticleEffect(ParticleEffectType type)
 	switch (type)
 	{
 	case ParticleEffectType::NO_TYPE:
+		effects[(int)ParticleEffectType::NO_TYPE] = effect;
 		break;
 	case ParticleEffectType::COLOR_OVER_LIFETIME:
+		effects[(int)ParticleEffectType::COLOR_OVER_LIFETIME] = effect;
 		break;
 	case ParticleEffectType::SIZE_OVER_LIFETIME:
+		effect = (ParticleEffect*)new ParticleEffect_Size();
+		effects[(int)ParticleEffectType::SIZE_OVER_LIFETIME] = effect;
 		break;
 	case ParticleEffectType::VELOCITY_OVER_LIFETIME:
 		effect = (ParticleEffect*)new ParticleEffect_Velocity();
@@ -268,6 +272,7 @@ void Emitter::CreateParticleEffect(ParticleEffectType type)
 		break;
 	case ParticleEffectType::ACCELERATION_OVER_LIFETIME:
 		effect = (ParticleEffect*)new ParticleEffect_Force();
+		effects[(int)ParticleEffectType::ACCELERATION_OVER_LIFETIME] = effect;
 		break;
 	default:
 		break;
