@@ -5,7 +5,7 @@
 #include <vector>
 #include "MathGeoLib/src/Math/float3.h"
 #include "MathGeoLib/src/Math/float2.h"
-
+#include "glmath.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
@@ -20,11 +20,11 @@ public:
 	void Load() override;
 	void UnLoad() override;
 
-	void Draw(bool& verticesNormals, bool& faceNormals, float3& colorNormal, float &colorLength);
+	void Draw(bool& verticesNormals, bool& faceNormals, Vec4& colorNormal, float &colorLength);
 	void Draw();
 
-	void ShowVertexNormals(float3& colorNormal, float& normalLength);
-	void ShowFaceNormals(float3& colorNormal, float& normalLength);
+	void ShowVertexNormals(Vec4& colorNormal, float& normalLength);
+	void ShowFaceNormals(Vec4& colorNormal, float& normalLength);
 
 	inline const char* GetPath() const { return path.c_str(); }
 	inline const int& GetVerticesSize() const { return vertices.size(); }

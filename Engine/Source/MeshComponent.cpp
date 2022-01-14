@@ -1,18 +1,13 @@
 #include "Application.h"
 #include "Globals.h"
 #include "MeshComponent.h"
-
 #include "ModuleScene.h"
 #include "CameraComponent.h"
 #include "FileSystem.h"
 #include "ResourceManager.h"
-
 #include "Mesh.h"
-
 #include "Imgui/imgui.h"
-
 #include "glew/include/GL/glew.h"
-
 #include "Profiling.h"
 
 MeshComponent::MeshComponent(GameObject* own, TransformComponent* trans) : material(nullptr), transform(trans), faceNormals(false), verticesNormals(false), normalLength(1.0f), colorNormal(150.0f, 0.0f, 255.0f)
@@ -86,6 +81,9 @@ void MeshComponent::DrawOutline()
 
 void MeshComponent::OnEditor()
 {
+	float color[4] = { colorNormal.r, colorNormal.g, colorNormal.b, colorNormal.a };
+
+
 	ImGui::PushID(this);
 
 	if (ImGui::CollapsingHeader("Mesh Renderer"))
@@ -106,7 +104,7 @@ void MeshComponent::OnEditor()
 		ImGui::Checkbox("Vertices normals", &verticesNormals);
 		ImGui::Checkbox("Face normals", &faceNormals);
 		ImGui::DragFloat("Normal Length", &normalLength, 0.200f);
-		ImGui::DragFloat3("Normal Color", colorNormal.ptr(), 1.0f, 0.0f, 255.0f);
+		ImGui::DragFloat4("Normal Color", color, 1.0f, 0.0f, 255.0f);
 		ImGui::Text("Reference Count: ");
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", mesh ? mesh.use_count() : 0);

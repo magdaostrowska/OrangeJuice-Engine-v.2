@@ -22,7 +22,6 @@ class GameObject
 {
 public:
 	GameObject();
-	//GameObject(GameObject* go);
 	~GameObject();
 
 	bool Update(float dt);

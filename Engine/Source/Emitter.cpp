@@ -4,15 +4,17 @@
 
 Emitter::Emitter()
 {
-	position = { 0.0f,0.0f,0.0f };
-	maxParticles = 100;
-	particlesPerSecond = 3;
+	maxParticles = 20;
+	particlesPerSecond = 1;
 	isActive = true;
 
 	particleReference = new Particle();
+	effects.resize(5);
 
-	timer = 1/particlesPerSecond;
+	timer = 1.0f/particlesPerSecond;
 	currTimer = timer;
+
+	showTexMenu = false;
 }
 
 Emitter::~Emitter()
@@ -25,55 +27,68 @@ void Emitter::EmitParticle(Particle& particle)
 
 void Emitter::Emit(float dt)
 {
-	for (int i = 0; i < particlesBuff.size(); i++) {
-
-		// When the particle is allocated in memory, but it's not being used at the moment
-		// Reuse an exisiting particle to make the smaller complexity, which results in more optimized code 
-
-		if (particlesBuff[i].isActive == false)
-		{
-			particlesBuff[i].isActive == true;
-			particlesBuff[i].position = position;
-			particlesBuff[i].velocity = particleReference->velocity;
-			particlesBuff[i].acceleration = particleReference->acceleration;
-			particlesBuff[i].rotation = particleReference->rotation;
-			particlesBuff[i].size = particleReference->size;
-			particlesBuff[i].color = particleReference->color;
-			particlesBuff[i].lifeTime = particleReference->lifeTime;
-
-			return;
-		}
-	}
-
-	// Create new particle
 	currTimer -= dt;
 	if (currTimer <= 0.0f) {
+		for (int i = 0; i < particlesBuff.size(); i++) {
+
+			// When the particle is allocated in memory, but it's not being used at the moment
+			// Reuse an exisiting particle to make the smaller complexity, which results in more optimized code 
+
+			if (particlesBuff[i].isActive == false)
+			{
+				particlesBuff[i].isActive = true;
+				particlesBuff[i].position = particleReference->position;
+				particlesBuff[i].velocity = particleReference->velocity;
+				particlesBuff[i].acceleration = particleReference->acceleration;
+				particlesBuff[i].rotation = particleReference->rotation;
+				particlesBuff[i].size = particleReference->size;
+				particlesBuff[i].color = particleReference->color;
+				particlesBuff[i].lifeTime = particleReference->lifeTime;
+
+				return;
+			}
+		}
+
+		// Create new particle
+	
 		if (particlesBuff.size() < maxParticles) {
 			Particle particle = new Particle(particleReference);
 			particlesBuff.push_back(particle);
 		}
 		currTimer = timer;
 	}
-	
 }
 
 void Emitter::Render()
 {
 	for (int i = 0; i < particlesBuff.size(); i++) {
 
-		BillboardParticle* planeBillboard = (BillboardParticle*)particlesBuff[i].plane->GetComponent(ComponentType::BILLBOARD);
-		if (planeBillboard != nullptr)
+		if (particlesBuff[i].isActive == true)
 		{
-			// TODO: RotateToFaceCamera() method
-		}
+			BillboardParticle* planeBillboard = (BillboardParticle*)particlesBuff[i].plane->GetComponent(ComponentType::BILLBOARD);
+			if (planeBillboard != nullptr)
+			{
+				// TODO: RotateToFaceCamera() method
+			}
 
-		TransformComponent* planeTransform = (TransformComponent*)particlesBuff[i].plane->GetComponent(ComponentType::TRANSFORM);
-		if (planeTransform != nullptr)
-		{
-			planeTransform->SetTransform(particlesBuff[i].position, Quat::identity, particlesBuff[i].size);
-			
-		}
+			TransformComponent* planeTransform = (TransformComponent*)particlesBuff[i].plane->GetComponent(ComponentType::TRANSFORM);
+			if (planeTransform != nullptr)
+			{
+				planeTransform->SetTransform(particlesBuff[i].position, Quat::FromEulerXYZ(particlesBuff[i].rotation.x, particlesBuff[i].rotation.y, particlesBuff[i].rotation.z), particlesBuff[i].size);
+			}
 
+			MaterialComponent* planeMaterial = (MaterialComponent*)particlesBuff[i].plane->GetComponent(ComponentType::MATERIAL);
+			if (planeMaterial != nullptr)
+			{
+				//planeMaterial
+			}
+
+			MeshComponent* planeMesh = (MeshComponent*)particlesBuff[i].plane->GetComponent(ComponentType::MESH_RENDERER);
+			if (planeMesh != nullptr)
+			{
+				planeMesh->colorNormal = particlesBuff[i].color;
+			}
+		}
 	}
 }
 
@@ -81,9 +96,19 @@ void Emitter::UpdateParticle(float dt)
 {
 	for (int i = 0; i < particlesBuff.size(); i++) {
 		
-		particlesBuff[i].lifeTime -= dt;
-		particlesBuff[i].position += particlesBuff[i].velocity;
-		particlesBuff[i].velocity += particlesBuff[i].acceleration;	
+		if (particlesBuff[i].isActive == true)
+		{
+			particlesBuff[i].lifeTime -= dt;
+			/*particlesBuff[i].position += particlesBuff[i].velocity;
+			particlesBuff[i].velocity += particlesBuff[i].acceleration;*/
+			for (int j = 0; j < effects.size(); j++)
+			{
+				if (effects[j] != nullptr && isEffectActive(effects[j]->type))
+				{
+					effects[j]->Update(particlesBuff[i], dt);
+				}
+			}
+		}
 
 		if (particlesBuff[i].lifeTime <= 0)
 			particlesBuff[i].isActive = false;
@@ -146,12 +171,141 @@ void Emitter::OnEditor(int emitterIndex)
 			particleReference->color.a = color[3];
 		}
 
-		//TODO: Texture part
+		ImGui::Indent();
 
+		//TODO: Texture part
+		ImGui::Text("Texture");
+
+		if (particleReference->tex != nullptr)
+		{
+			
+			if (ImGui::ImageButton((ImTextureID)particleReference->tex->id, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0)))
+			{
+
+			}
+
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::BeginTooltip();
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 0.2f, 0.2f, 1.0f));
+				ImGui::Text("Click on the image to erase it");
+				ImGui::PopStyleColor();
+				ImGui::EndTooltip();
+			}
+		}
+		else
+		{
+			ImGui::Image((ImTextureID)0, ImVec2(64, 64), ImVec2(0, 1), ImVec2(1, 0));
+		}
+
+		for (int i = (int)ParticleEffectType::NO_TYPE + 1; i < (int)ParticleEffectType::ACCELERATION_OVER_LIFETIME; i++)
+		{
+			if (isEffectActive((ParticleEffectType)i))
+			{
+				ImGui::Spacing();
+				ImGui::Separator();
+				ImGui::Spacing();
+				ImGui::Spacing();
+
+				effects[(int)(ParticleEffectType)i]->OnEditor(emitterIndex);
+			}
+		}
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+		guiName = "Add Effect##PaShapeEf";
+		guiName += emitterIndex;
+
+		std::string textNameDisplay = "NEW EFFECT";
+
+		textNameDisplay += "##PaShapeEf";
+		textNameDisplay += emitterIndex;
+		if (ImGui::BeginCombo(guiName.c_str(), textNameDisplay.c_str()))
+		{
+			for (int j = (int)ParticleEffectType::NO_TYPE + 1; j < (int)ParticleEffectType::ACCELERATION_OVER_LIFETIME; j++)
+			{
+				guiName = (GetNameFromEffect((ParticleEffectType)j)) + suffixLabel;
+
+				int index = isEffectActive((ParticleEffectType)j);
+				if (isEffectActive((ParticleEffectType)j) == false)
+				{
+					//if the effect hasnt been created
+					if (ImGui::Selectable(guiName.c_str()))
+					{
+						CreateParticleEffect((ParticleEffectType)j);
+					}
+				}
+			}
+			ImGui::EndCombo();
+		}
 	}
 }
 
 void Emitter::SetParticlesPerSecond(float particlesPerSec)
 {
 	particlesPerSecond = particlesPerSec;
+	//timer = 1.0f / particlesPerSecond;
+}
+
+void Emitter::CreateParticleEffect(ParticleEffectType type)
+{
+	ParticleEffect* effect = nullptr;
+
+	switch (type)
+	{
+	case ParticleEffectType::NO_TYPE:
+		break;
+	case ParticleEffectType::COLOR_OVER_LIFETIME:
+		break;
+	case ParticleEffectType::SIZE_OVER_LIFETIME:
+		break;
+	case ParticleEffectType::VELOCITY_OVER_LIFETIME:
+		effect = (ParticleEffect*)new ParticleEffect_Velocity();
+		effects[(int)ParticleEffectType::VELOCITY_OVER_LIFETIME] = effect;
+		break;
+	case ParticleEffectType::ACCELERATION_OVER_LIFETIME:
+		effect = (ParticleEffect*)new ParticleEffect_Force();
+		break;
+	default:
+		break;
+	}
+}
+
+bool Emitter::isEffectActive(ParticleEffectType type)
+{
+	for (int i = 0; i < effects.size(); ++i)
+	{
+		if (effects[i] != nullptr && effects[i]->type == type)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+std::string Emitter::GetNameFromEffect(ParticleEffectType type)
+{
+	switch (type)
+	{
+	case ParticleEffectType::NO_TYPE:
+		return "No Type";
+		break;
+	case ParticleEffectType::COLOR_OVER_LIFETIME:
+		return "Color Effect";
+		break;
+	case ParticleEffectType::SIZE_OVER_LIFETIME:
+		return "Size Effect";
+		break;
+	case ParticleEffectType::VELOCITY_OVER_LIFETIME:
+		return "Velocity Effect";
+		break;
+	case ParticleEffectType::ACCELERATION_OVER_LIFETIME:
+		return "Acceleration Effect";
+		break;
+	default:
+		break;
+	}
 }

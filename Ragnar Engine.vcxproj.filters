@@ -52,6 +52,9 @@
     <Filter Include="Sources\Particles">
       <UniqueIdentifier>{6f426947-e7b0-407e-8703-a09d956a1138}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Particles\Effects">
+      <UniqueIdentifier>{cb6092ae-e6e9-4bf8-b81e-1831bfd22cbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Source\Module.h">
@@ -262,15 +265,29 @@
       <Filter>Sources\Tools</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Engine\Source\Particle.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Source\Emitter.h" />
     <ClInclude Include="Engine\Source\BillboardParticle.h">
       <Filter>Sources\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\ParticleSystem.h">
       <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Emitter.h">
+      <Filter>Sources\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\Particle.h">
+      <Filter>Sources\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleEffect.h">
+      <Filter>Sources\Particles\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleEffect_Velocity.h">
+      <Filter>Sources\Particles\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleEffect_Force.h">
+      <Filter>Sources\Particles\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleEffect_Size.h">
+      <Filter>Sources\Particles\Effects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -439,12 +456,26 @@
     <ClCompile Include="Engine\Source\Model.cpp">
       <Filter>Sources\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\Emitter.cpp" />
     <ClCompile Include="Engine\Source\BillboardParticle.cpp">
       <Filter>Sources\GameObject\Components</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\ParticleSystem.cpp">
       <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\Emitter.cpp">
+      <Filter>Sources\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleEffect.cpp">
+      <Filter>Sources\Particles\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleEffect_Velocity.cpp">
+      <Filter>Sources\Particles\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleEffect_Size.cpp">
+      <Filter>Sources\Particles\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleEffect_Force.cpp">
+      <Filter>Sources\Particles\Effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

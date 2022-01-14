@@ -64,7 +64,7 @@ void Mesh::UnLoad()
 	}
 }
 
-void Mesh::Draw(bool& verticesNormals, bool& faceNormals, float3& colorNormal, float& colorLength)
+void Mesh::Draw(bool& verticesNormals, bool& faceNormals, Vec4& colorNormal, float& colorLength)
 {
 	vbo->Bind();
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -105,12 +105,12 @@ void Mesh::Draw()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void Mesh::ShowVertexNormals(float3& colorNormal, float &normalLength)
+void Mesh::ShowVertexNormals(Vec4& colorNormal, float &normalLength)
 {
 	if (!normals.empty())
 	{
 		glBegin(GL_LINES);
-		glColor3f(colorNormal.x / 255, colorNormal.y / 255, colorNormal.z / 255);
+		glColor4f(colorNormal.x / 255, colorNormal.y / 255, colorNormal.z / 255, colorNormal.a / 255);
 		for (int i = 0; i < vertices.size(); ++i)
 		{
 			glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
@@ -125,7 +125,7 @@ void Mesh::ShowVertexNormals(float3& colorNormal, float &normalLength)
 	}
 }
 
-void Mesh::ShowFaceNormals(float3& colorNormal, float& normalLength)
+void Mesh::ShowFaceNormals(Vec4& colorNormal, float& normalLength)
 {
 	glBegin(GL_LINES);
 	glColor3f(colorNormal.x / 255, colorNormal.y / 255, colorNormal.z / 255);

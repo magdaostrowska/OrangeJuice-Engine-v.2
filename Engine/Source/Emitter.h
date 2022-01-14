@@ -2,8 +2,12 @@
 #include "Particle.h"
 #include "GameObject.h"
 #include "Resource.h"
+#include "Texture.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ParticleEffect.h"
+#include "ParticleEffect_Velocity.h"
+#include "ParticleEffect_Force.h"
 #include "MathGeoLib/src/Geometry/Frustum.h"
 #include <string>
 
@@ -22,15 +26,18 @@ public:
 	void OnEditor(int emitterIndex);
 	void SetParticlesPerSecond(float particlesPerSec);
 
+	void CreateParticleEffect(ParticleEffectType type);
+	bool isEffectActive(ParticleEffectType type);
+	std::string GetNameFromEffect(ParticleEffectType type);
+
 public:
 
-	float3 position;
 	int maxParticles;
 	float particlesPerSecond;
 	bool isActive;
 	bool toDelete;
 
-	//std::vector<GameObject*> planes;
+	std::vector<ParticleEffect*> effects;
 	std::vector<Particle> particlesBuff;
 	Particle* particleReference;
 
@@ -40,5 +47,5 @@ public:
 private:
 
 	char charsOfName[50];
-	std::shared_ptr<Texture> tex;
+	bool showTexMenu;
 };

@@ -1,8 +1,8 @@
 #pragma once
-#include "glmath.h"
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "ModuleScene.h"
+#include "glmath.h"
 #include "MathGeoLib/src/Geometry/Frustum.h"
 
 class Particle {
@@ -12,12 +12,13 @@ public:
 	// This constructor is made to create the particle reference only
 	Particle() {
 		lifeTime = 10.0f;
-		rotation = { 0.0f,0.0f,0.0f };
+		rotation = { 90.0f,0.0f,0.0f };
 		acceleration = { 0.0f,0.0f,0.0f };
 		size = { 1.0f,1.0f,1.0f };
-		velocity = { 0.0f,0.01f,0.0f };
+		velocity = { 0.0f,0.0f,0.0f };
 		position = { 0.0f,0.0f,0.0f };
 		color = { 0, 0, 0 };
+		tex = nullptr;
 		isActive = true;
 		plane = app->scene->CreateGameObject(app->scene->smoke, true);
 		plane->SetName("Particle");
@@ -37,6 +38,7 @@ public:
 		velocity = particleReference->velocity;
 		position = particleReference->position;
 		color = particleReference->color;
+		tex = particleReference->tex;
 		isActive = particleReference->isActive;
 
 		plane = app->scene->CreateGameObject(app->scene->smoke, true);
@@ -57,5 +59,6 @@ public:
 	//Vec3 startColor, endColor;
 	//Vec4 color4, startColor4, endColor4;
 	bool isActive;
+	std::shared_ptr<Texture> tex;
 	GameObject* plane;
 };

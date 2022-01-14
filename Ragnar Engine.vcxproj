@@ -148,6 +148,10 @@
     <ClInclude Include="Engine\Source\ModuleScene.h" />
     <ClInclude Include="Engine\Source\ModuleWindow.h" />
     <ClInclude Include="Engine\Source\Particle.h" />
+    <ClInclude Include="Engine\Source\ParticleEffect.h" />
+    <ClInclude Include="Engine\Source\ParticleEffect_Force.h" />
+    <ClInclude Include="Engine\Source\ParticleEffect_Size.h" />
+    <ClInclude Include="Engine\Source\ParticleEffect_Velocity.h" />
     <ClInclude Include="Engine\Source\ParticleSystem.h" />
     <ClInclude Include="Engine\Source\Primitive.h" />
     <ClInclude Include="Engine\Source\Primitives.h" />
@@ -212,6 +216,10 @@
     <ClCompile Include="Engine\Source\ModuleRenderer3D.cpp" />
     <ClCompile Include="Engine\Source\ModuleScene.cpp" />
     <ClCompile Include="Engine\Source\ModuleWindow.cpp" />
+    <ClCompile Include="Engine\Source\ParticleEffect.cpp" />
+    <ClCompile Include="Engine\Source\ParticleEffect_Force.cpp" />
+    <ClCompile Include="Engine\Source\ParticleEffect_Size.cpp" />
+    <ClCompile Include="Engine\Source\ParticleEffect_Velocity.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem.cpp" />
     <ClCompile Include="Engine\Source\Primitive.cpp" />
     <ClCompile Include="Engine\Source\Quadtree.cpp" />

@@ -4,8 +4,8 @@
 #include "Component.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
+#include "glmath.h"
 #include "MathGeoLib/src/MathGeoLib.h"
-
 #include <vector>
 
 typedef unsigned int GLuint;
@@ -37,12 +37,16 @@ public:
 
 	AABB GetLocalAABB() { return localBoundingBox; }
 	const std::shared_ptr<Mesh> GetMesh() const { return mesh; }
+
+public:
+
+	Vec4 colorNormal;
+
 private:
 	TransformComponent* transform;
 	MaterialComponent* material;
 
 	float normalLength;
-	float3 colorNormal;
 	
 	bool faceNormals;
 	bool verticesNormals;
