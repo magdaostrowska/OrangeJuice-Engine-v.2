@@ -30,6 +30,8 @@ public:
 	bool isEffectActive(ParticleEffectType type);
 	std::string GetNameFromEffect(ParticleEffectType type);
 
+private:
+	void SetParticleTexture(Particle& particle);
 public:
 
 	int maxParticles;

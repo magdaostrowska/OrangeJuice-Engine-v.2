@@ -55,11 +55,9 @@ public:
 
 	float lifeTime;
 	float3 rotation, acceleration;
-	float3 size; // float startSize, endSize
+	float3 size;
 	float3 velocity, position, direction;
 	Vec4 color;
-	//Vec3 startColor, endColor;
-	//Vec4 color4, startColor4, endColor4;
 	bool isActive;
 	std::shared_ptr<Texture> tex;
 	GameObject* plane;

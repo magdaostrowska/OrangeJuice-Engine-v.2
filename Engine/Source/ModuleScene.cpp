@@ -40,6 +40,9 @@ bool ModuleScene::Start()
 	ResourceManager::GetInstance()->ImportAllResources();
 	ImportPrimitives();
 
+	street = CreateGameObject(root, true);
+	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"), *street);
+
 	smoke = CreateGameObject(root);
 	smoke->SetName("Particle System");
 	smoke->CreateComponent(ComponentType::PARTICLE_SYSTEM);
@@ -55,7 +58,7 @@ bool ModuleScene::Start()
 		//ResourceManager::GetInstance()->IsTextureLoaded("Assets/Resources/smoke.png");
 		//material->SetTexture(ResourceManager::GetInstance()->IsTextureLoaded("Assets/Resources/smoke.png"));
 	}
-
+	
 	return true;
 }
 

@@ -1,6 +1,7 @@
 #include "Emitter.h"
 #include "ResourceManager.h"
 #include "Mesh.h"
+#include "TextureImporter.h"
 
 Emitter::Emitter()
 {
@@ -41,6 +42,8 @@ void Emitter::Emit(float dt)
 				particlesBuff[i]->color = particleReference->color;
 				particlesBuff[i]->lifeTime = particleReference->lifeTime;
 
+				SetParticleTexture(*particlesBuff[i]);
+
 				for (int j = 0; j < effects.size(); j++)
 				{
 					if (effects[j] != nullptr)
@@ -56,6 +59,7 @@ void Emitter::Emit(float dt)
 			// Create new particle
 			Particle* particle = new Particle(particleReference);
 			particlesBuff.push_back(particle);
+			SetParticleTexture(*particle);
 		}
 		currTimer = timer;
 	}
@@ -317,5 +321,23 @@ std::string Emitter::GetNameFromEffect(ParticleEffectType type)
 		break;
 	default:
 		break;
+	}
+}
+
+void Emitter::SetParticleTexture(Particle& particle)
+{
+	MaterialComponent* matRef = (MaterialComponent*)particleReference->plane->GetComponent(ComponentType::MATERIAL);
+	if (matRef != nullptr) {
+		if (particle.plane->GetComponent(ComponentType::MATERIAL) == nullptr) {
+			particle.plane->CreateComponent(ComponentType::MATERIAL);
+			MaterialComponent* mat = (MaterialComponent*)particle.plane->GetComponent(ComponentType::MATERIAL);
+			mat->diff = matRef->diff;
+			mat->checker = matRef->checker;
+		}
+		else {
+			MaterialComponent* mat = (MaterialComponent*)particle.plane->GetComponent(ComponentType::MATERIAL);
+			mat->diff = matRef->diff;
+			mat->checker = matRef->checker;
+		}
 	}
 }

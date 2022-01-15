@@ -85,6 +85,7 @@ public:
 
 	CameraComponent* mainCamera;
 	GameObject* smoke;
+	GameObject* street;
 
 private:
 

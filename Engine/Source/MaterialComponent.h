@@ -27,7 +27,7 @@ public:
 
 	void SetTexture(std::shared_ptr<Resource> tex);
 
-private:
+public:
 	bool checker;
 	bool showTexMenu;
 
