@@ -15,7 +15,7 @@
 class Emitter {
 public:
 
-	Emitter();
+	Emitter(GameObject* owner);
 	~Emitter();
 
 	void Emit(float dt);
@@ -29,6 +29,7 @@ public:
 	void CreateParticleEffect(ParticleEffectType type);
 	bool isEffectActive(ParticleEffectType type);
 	std::string GetNameFromEffect(ParticleEffectType type);
+	ParticleEffect* GetParticleEffect(ParticleEffectType type);
 
 private:
 	void SetParticleTexture(Particle& particle);
@@ -42,6 +43,7 @@ public:
 	std::vector<ParticleEffect*> effects;
 	std::vector<Particle*> particlesBuff;
 	Particle* particleReference;
+	GameObject* own;
 
 	float3 minVelocity;
 	float3 maxVelocity;

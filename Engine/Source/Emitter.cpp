@@ -3,10 +3,10 @@
 #include "Mesh.h"
 #include "TextureImporter.h"
 
-Emitter::Emitter()
+Emitter::Emitter(GameObject* owner)
 {
-	maxParticles = 10;
-	particlesPerSecond = 1;
+	maxParticles = 200;
+	particlesPerSecond = 20;
 	isActive = true;
 
 	particleReference = new Particle();
@@ -19,6 +19,9 @@ Emitter::Emitter()
 
 	minVelocity = {0.0f, 0.0f, 0.0f};
 	maxVelocity = { 1.0f, 1.0f, 1.0f };
+
+	own = owner;
+
 }
 
 Emitter::~Emitter()
@@ -34,27 +37,29 @@ void Emitter::Emit(float dt)
 			// When the particle is allocated in memory, but it's not being used at the moment
 			// Reuse an exisiting particle to make the smaller complexity, which results in more optimized code 
 
-			if (particlesBuff[i]->isActive == false)
+			TransformComponent* transform =	(TransformComponent*)own->GetComponent(ComponentType::TRANSFORM);
+			if (transform != nullptr)
 			{
-				particlesBuff[i]->isActive = true;
-				particlesBuff[i]->position = { 0,0,0 }; //particleReference->position;
-				particlesBuff[i]->velocity = { 0,0,0 }; //particleReference->velocity;
-				particlesBuff[i]->acceleration = { 0,0,0 }; //particleReference->acceleration;
-				particlesBuff[i]->rotation = particleReference->rotation;
-				particlesBuff[i]->size = particleReference->size;
-				particlesBuff[i]->color = particleReference->color;
-				particlesBuff[i]->lifeTime = particleReference->lifeTime;
-
-				SetParticleTexture(*particlesBuff[i]);
-
-				for (int j = 0; j < effects.size(); j++)
+				if (particlesBuff[i]->isActive == false)
 				{
-					if (effects[j] != nullptr)
+					particlesBuff[i]->isActive = true;
+					particlesBuff[i]->position = transform->position;
+					particlesBuff[i]->rotation = particleReference->rotation;
+					particlesBuff[i]->size = particleReference->size;
+					particlesBuff[i]->color = particleReference->color;
+					particlesBuff[i]->lifeTime = particleReference->lifeTime;
+
+					SetParticleTexture(*particlesBuff[i]);
+
+					for (int j = 0; j < effects.size(); j++)
 					{
-						effects[j]->Init(*particlesBuff[i]);
+						if (effects[j] != nullptr)
+						{
+							effects[j]->Init(*particlesBuff[i]);
+						}
 					}
+					return;
 				}
-				return;
 			}
 		}
 
@@ -324,6 +329,17 @@ std::string Emitter::GetNameFromEffect(ParticleEffectType type)
 		break;
 	default:
 		break;
+	}
+}
+
+ParticleEffect* Emitter::GetParticleEffect(ParticleEffectType type)
+{
+	for (int i = 0; i < effects.size(); i++)
+	{
+		if (effects[i] != nullptr && effects[i]->type == type)
+		{
+			return effects[i];
+		}
 	}
 }
 

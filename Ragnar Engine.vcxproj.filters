@@ -290,6 +290,8 @@
       <Filter>Sources\Particles\Effects</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\ParticleEffect_Color.h" />
+    <ClInclude Include="Engine\Source\Smoke.h" />
+    <ClInclude Include="Engine\Source\Firework.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Source\ModuleCamera3D.cpp">

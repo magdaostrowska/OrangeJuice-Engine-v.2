@@ -14,7 +14,7 @@ public:
 		lifeTime = 10.0f;
 		rotation = { 90.0f,0.0f,0.0f };
 		acceleration = { 0.0f,0.0f,0.0f };
-		size = { 1.0f,1.0f,1.0f };
+		size = { 0.5f,0.5f,0.5f };
 		velocity = { 0.0f,0.0f,0.0f };
 		position = { 0.0f,0.0f,0.0f };
 		color = { 0, 0, 0 };
@@ -22,7 +22,7 @@ public:
 		isActive = true;
 
 		//TODO: Particle Reference shoudn't have a plane
-		plane = app->scene->CreateGameObject(app->scene->smoke, true);
+		plane = app->scene->CreateGameObject(app->scene->smoke1, true);
 		plane->SetName("ParticleReference");
 		plane->CreateComponent(ComponentType::MESH_RENDERER);
 		plane->CreateComponent(ComponentType::BILLBOARD);
@@ -43,7 +43,7 @@ public:
 		tex = particleReference->tex;
 		isActive = particleReference->isActive;
 
-		plane = app->scene->CreateGameObject(app->scene->smoke, true);
+		plane = app->scene->CreateGameObject(app->scene->smoke1, true);
 		plane->SetName("Particle");
 		plane->CreateComponent(ComponentType::MESH_RENDERER);
 		plane->CreateComponent(ComponentType::BILLBOARD);

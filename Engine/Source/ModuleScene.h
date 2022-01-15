@@ -81,10 +81,14 @@ public:
 	Quadtree& GetQuadtree() { return qTree; }
 	void SetGameDeltaTime(float deltaTime) { gameTimer.SetDesiredDeltaTime(deltaTime); }
 
+	GameObject* CreateSmoke(float3 position);
+	GameObject* CreateFirework(float3 position);
+
 public: 
 
 	CameraComponent* mainCamera;
-	GameObject* smoke;
+	GameObject* smoke1; 
+	GameObject* smoke2;
 	GameObject* street;
 
 private:
@@ -100,4 +104,6 @@ private:
 	GameObject* goToRecalculate;
 
 	std::string sceneDir;
+
+	float3 pos1, pos2;
 };

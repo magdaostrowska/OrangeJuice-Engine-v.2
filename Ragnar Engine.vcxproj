@@ -121,6 +121,7 @@
     <ClInclude Include="Engine\Source\Dialogs.h" />
     <ClInclude Include="Engine\Source\Emitter.h" />
     <ClInclude Include="Engine\Source\FileSystem.h" />
+    <ClInclude Include="Engine\Source\Firework.h" />
     <ClInclude Include="Engine\Source\Framebuffer.h" />
     <ClInclude Include="Engine\Source\GameObject.h" />
     <ClInclude Include="Engine\Source\GameTimer.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Engine\Source\Quadtree.h" />
     <ClInclude Include="Engine\Source\Resource.h" />
     <ClInclude Include="Engine\Source\ResourceManager.h" />
+    <ClInclude Include="Engine\Source\Smoke.h" />
     <ClInclude Include="Engine\Source\Texture.h" />
     <ClInclude Include="Engine\Source\TextureBuffer.h" />
     <ClInclude Include="Engine\Source\TextureImporter.h" />

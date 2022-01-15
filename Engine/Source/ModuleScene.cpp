@@ -17,7 +17,8 @@
 
 ModuleScene::ModuleScene() : sceneDir(""), mainCamera(nullptr), gameState(GameState::NOT_PLAYING), frameSkip(0), resetQuadtree(true), goToRecalculate(nullptr)
 {
-	smoke = nullptr;
+	smoke1 = nullptr;
+	smoke2 = nullptr;
 	root = new GameObject();
 	root->SetName("Untitled");
 }
@@ -43,21 +44,8 @@ bool ModuleScene::Start()
 	street = CreateGameObject(root, true);
 	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"), *street);
 
-	smoke = CreateGameObject(root);
-	smoke->SetName("Particle System");
-	smoke->CreateComponent(ComponentType::PARTICLE_SYSTEM);
-
-	ParticleSystem* test = (ParticleSystem*)smoke->GetComponent(ComponentType::PARTICLE_SYSTEM);
-	Emitter* emitter = new Emitter();
-	test->SetEmitter(emitter);
-
-	MaterialComponent* material = (MaterialComponent*)smoke->GetComponent(ComponentType::MATERIAL);
-	if (material != nullptr)
-	{
-	
-		//ResourceManager::GetInstance()->IsTextureLoaded("Assets/Resources/smoke.png");
-		//material->SetTexture(ResourceManager::GetInstance()->IsTextureLoaded("Assets/Resources/smoke.png"));
-	}
+	smoke1 = CreateSmoke(float3{ 21.9f,10.14f,42.54f });
+	smoke2 = CreateSmoke(float3{ -31.09f,7.99f,-26.33f });
 	
 	return true;
 }
@@ -450,6 +438,57 @@ void ModuleScene::ImportPrimitives()
 	indices.clear();
 	normals.clear();
 	texCoords.clear();
+}
+
+GameObject* ModuleScene::CreateSmoke(float3 position)
+{
+	GameObject* go = CreateGameObject(root);
+	go->SetName("Smoke");
+	go->CreateComponent(ComponentType::PARTICLE_SYSTEM);
+	TransformComponent* transformComponent = (TransformComponent*)go->GetComponent(ComponentType::TRANSFORM);
+	transformComponent->position = position;
+
+	ParticleSystem* particleSystem = (ParticleSystem*)go->GetComponent(ComponentType::PARTICLE_SYSTEM);
+	Emitter* emitter = new Emitter(go);
+	particleSystem->SetEmitter(emitter);
+
+	emitter->CreateParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
+	ParticleEffect_Velocity* velocityEffect = (ParticleEffect_Velocity*) emitter->GetParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
+	velocityEffect->minVelocity = {-0.03f,0.1f,-0.03f};
+	velocityEffect->maxVelocity = { 0.03f,0.1f,0.03f };
+
+	return go;
+}
+
+GameObject* ModuleScene::CreateFirework(float3 position)
+{
+	GameObject* go = CreateGameObject(root);
+	/*go->SetName("Firework");
+	go->CreateComponent(ComponentType::PARTICLE_SYSTEM);
+	TransformComponent* transformComponent = (TransformComponent*)go->GetComponent(ComponentType::TRANSFORM);
+	transformComponent->position = position;
+
+	ParticleSystem* particleSystem = (ParticleSystem*)go->GetComponent(ComponentType::PARTICLE_SYSTEM);
+	Emitter* emitter = new Emitter(go);
+	particleSystem->SetEmitter(emitter);
+
+	emitter->CreateParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
+	ParticleEffect_Velocity* velocityEffect = (ParticleEffect_Velocity*)emitter->GetParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
+	velocityEffect->minVelocity = { -0.03f,0.1f,-0.03f };
+	velocityEffect->maxVelocity = { 0.03f,0.1f,0.03f };
+
+	emitter->CreateParticleEffect(ParticleEffectType::ACCELERATION_OVER_LIFETIME);
+	ParticleEffect_Acceleration* accelerationEffect = (ParticleEffect_Acceleration*)emitter->GetParticleEffect(ParticleEffectType::ACCELERATION_OVER_LIFETIME);
+
+	float3 limit = position;
+	limit.y = 20;
+
+	if (true)
+	{
+
+	}
+	*/
+	return go;
 }
 
 //void ModuleScene::AddToQuadtree(GameObject* go)
