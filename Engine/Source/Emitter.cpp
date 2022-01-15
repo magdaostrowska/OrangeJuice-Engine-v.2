@@ -16,6 +16,9 @@ Emitter::Emitter()
 	currTimer = timer;
 
 	showTexMenu = false;
+
+	minVelocity = {0.0f, 0.0f, 0.0f};
+	maxVelocity = { 1.0f, 1.0f, 1.0f };
 }
 
 Emitter::~Emitter()

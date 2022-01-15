@@ -1,5 +1,6 @@
 #pragma once
 #include "ParticleEffect.h"
+#include "MathGeoLib/src/Algorithm/Random/LCG.h"
 
 class ParticleEffect_Velocity : ParticleEffect
 {
@@ -13,5 +14,6 @@ public:
 
 public:
 
-	float3 velocity;
+	float3 minVelocity, maxVelocity;
+	LCG random;
 };

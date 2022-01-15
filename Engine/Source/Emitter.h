@@ -43,6 +43,9 @@ public:
 	std::vector<Particle*> particlesBuff;
 	Particle* particleReference;
 
+	float3 minVelocity;
+	float3 maxVelocity;
+
 	float timer;
 	float currTimer;
 	

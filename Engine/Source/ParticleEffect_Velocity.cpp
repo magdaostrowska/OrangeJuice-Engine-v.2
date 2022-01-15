@@ -3,7 +3,8 @@
 ParticleEffect_Velocity::ParticleEffect_Velocity() : ParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME)
 {
 	type = ParticleEffectType::VELOCITY_OVER_LIFETIME;
-	velocity = float3( 0.0f,0.0f,0.0f );
+	minVelocity = { 0.0f,0.0f,0.0f };
+	maxVelocity = { 1.0f, 1.0f, 1.0f };
 }
 
 ParticleEffect_Velocity::~ParticleEffect_Velocity()
@@ -12,28 +13,25 @@ ParticleEffect_Velocity::~ParticleEffect_Velocity()
 
 void ParticleEffect_Velocity::Init(Particle& particle)
 {
-	particle.velocity = { velocity.x,velocity.y,velocity.z };
+	LCG random;
+	float randomVel_x = random.Float(minVelocity.x, maxVelocity.x);
+	float randomVel_y = random.Float(minVelocity.y, maxVelocity.y);
+	float randomVel_z = random.Float(minVelocity.z, maxVelocity.z);
+	particle.velocity = { randomVel_x, randomVel_y,randomVel_z };
 }
 
 void ParticleEffect_Velocity::Update(Particle& particle, float dt)
 {
-	////Add velocity value from inspector into particle's velocity
-	//particle.velocity.x = velocity.x;
-	//particle.velocity.y = velocity.y;
-	//particle.velocity.z = velocity.z;
-
-	////Update position based on particle's velocity
-	//particle.position.x += particle.velocity.x * dt;
-	//particle.position.y += particle.velocity.y * dt;
-	//particle.position.z += particle.velocity.z * dt;
 }
 
 void ParticleEffect_Velocity::OnEditor(int emitterIndex)
 {
-	float vel[3] = { velocity.x, velocity.y, velocity.z };
 	float minVel = -1.0f;
 	float maxVel = 1.0f;
 
+	float minV[3] = { minVelocity.x, minVelocity.y, minVelocity.z };
+	float maxV[3] = { maxVelocity.x, maxVelocity.y, maxVelocity.z };
+	
 	std::string suffixLabel = "Velocity Over Lifetime Effect##";
 	suffixLabel += emitterIndex;
 	if (ImGui::CollapsingHeader(suffixLabel.c_str(), ImGuiTreeNodeFlags_Bullet))
@@ -46,10 +44,19 @@ void ParticleEffect_Velocity::OnEditor(int emitterIndex)
 		ImGui::Spacing();
 		ImGui::Indent();
 
-		suffixLabel = "Velocity##vel";
+		suffixLabel = "Minimum Velocity##max_vel";
 		suffixLabel += emitterIndex;
-		ImGui::DragFloat3(suffixLabel.c_str(), vel, 0.01f, minVel, maxVel);
-		velocity = { vel[0],vel[1],vel[2] };
+		ImGui::DragFloat3(suffixLabel.c_str(), minV, 0.01f, minVel, maxVel);
+		minVelocity.x = minV[0];
+		minVelocity.y = minV[1];
+		minVelocity.z = minV[2];
+
+		suffixLabel = "Maximum Velocity##max_vel";
+		suffixLabel += emitterIndex;
+		ImGui::DragFloat3(suffixLabel.c_str(), maxV, 0.01f, minVel, maxVel);
+		maxVelocity.x = maxV[0];
+		maxVelocity.y = maxV[1];
+		maxVelocity.z = maxV[2];
 
 		ImGui::Unindent();
 	}
