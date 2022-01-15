@@ -149,7 +149,8 @@
     <ClInclude Include="Engine\Source\ModuleWindow.h" />
     <ClInclude Include="Engine\Source\Particle.h" />
     <ClInclude Include="Engine\Source\ParticleEffect.h" />
-    <ClInclude Include="Engine\Source\ParticleEffect_Force.h" />
+    <ClInclude Include="Engine\Source\ParticleEffect_Color.h" />
+    <ClInclude Include="Engine\Source\ParticleEffect_Acceleration.h" />
     <ClInclude Include="Engine\Source\ParticleEffect_Size.h" />
     <ClInclude Include="Engine\Source\ParticleEffect_Velocity.h" />
     <ClInclude Include="Engine\Source\ParticleSystem.h" />
@@ -217,7 +218,8 @@
     <ClCompile Include="Engine\Source\ModuleScene.cpp" />
     <ClCompile Include="Engine\Source\ModuleWindow.cpp" />
     <ClCompile Include="Engine\Source\ParticleEffect.cpp" />
-    <ClCompile Include="Engine\Source\ParticleEffect_Force.cpp" />
+    <ClCompile Include="Engine\Source\ParticleEffect_Acceleration.cpp" />
+    <ClCompile Include="Engine\Source\ParticleEffect_Color.cpp" />
     <ClCompile Include="Engine\Source\ParticleEffect_Size.cpp" />
     <ClCompile Include="Engine\Source\ParticleEffect_Velocity.cpp" />
     <ClCompile Include="Engine\Source\ParticleSystem.cpp" />

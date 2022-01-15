@@ -7,7 +7,7 @@
 #include "ModuleScene.h"
 #include "ParticleEffect.h"
 #include "ParticleEffect_Velocity.h"
-#include "ParticleEffect_Force.h"
+#include "ParticleEffect_Acceleration.h"
 #include "ParticleEffect_Size.h"
 #include "MathGeoLib/src/Geometry/Frustum.h"
 #include <string>
@@ -18,7 +18,6 @@ public:
 	Emitter();
 	~Emitter();
 
-	virtual void EmitParticle(Particle& particle);
 	void Emit(float dt);
 	void Render();
 	void UpdateParticle(float dt);
@@ -39,7 +38,7 @@ public:
 	bool toDelete;
 
 	std::vector<ParticleEffect*> effects;
-	std::vector<Particle> particlesBuff;
+	std::vector<Particle*> particlesBuff;
 	Particle* particleReference;
 
 	float timer;

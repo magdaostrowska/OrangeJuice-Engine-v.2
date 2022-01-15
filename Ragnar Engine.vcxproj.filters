@@ -283,12 +283,13 @@
     <ClInclude Include="Engine\Source\ParticleEffect_Velocity.h">
       <Filter>Sources\Particles\Effects</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Source\ParticleEffect_Force.h">
+    <ClInclude Include="Engine\Source\ParticleEffect_Acceleration.h">
       <Filter>Sources\Particles\Effects</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Source\ParticleEffect_Size.h">
       <Filter>Sources\Particles\Effects</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Source\ParticleEffect_Color.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Source\ModuleCamera3D.cpp">
@@ -474,9 +475,10 @@
     <ClCompile Include="Engine\Source\ParticleEffect_Size.cpp">
       <Filter>Sources\Particles\Effects</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Source\ParticleEffect_Force.cpp">
+    <ClCompile Include="Engine\Source\ParticleEffect_Acceleration.cpp">
       <Filter>Sources\Particles\Effects</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Source\ParticleEffect_Color.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OrangeJuice Engine.rc" />

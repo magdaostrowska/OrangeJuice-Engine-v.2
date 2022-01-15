@@ -25,6 +25,8 @@ void ParticleEffect_Size::OnEditor(int emitterIndex)
 {
 	float start[2] = { startSize[0],startSize[1] };
 	float end[2] = { endSize[0],endSize[1] };
+	float minSize = 0.0f;
+	float maxSize = 1.0f;
 
 	std::string suffixLabel = "Size Over Lifetime Effect##";
 	suffixLabel += emitterIndex;
@@ -42,12 +44,12 @@ void ParticleEffect_Size::OnEditor(int emitterIndex)
 
 		suffixLabel = "Initial Size##SizeOverLife";
 		suffixLabel += emitterIndex;
-		ImGui::DragFloat2(suffixLabel.c_str(), start, 0.1f);
+		ImGui::DragFloat2(suffixLabel.c_str(), start, 0.1f, minSize, maxSize);
 		startSize = { start[0] , start[1]};
 
 		suffixLabel = "End Size##SizeOverLife";
 		suffixLabel += emitterIndex;
-		ImGui::DragFloat2(suffixLabel.c_str(), end, 0.1f);
+		ImGui::DragFloat2(suffixLabel.c_str(), end, 0.1f, minSize, maxSize);
 		endSize = { end[0] , end[1] };
 
 		ImGui::Unindent();

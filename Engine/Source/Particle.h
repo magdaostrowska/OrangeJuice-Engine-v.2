@@ -20,8 +20,10 @@ public:
 		color = { 0, 0, 0 };
 		tex = nullptr;
 		isActive = true;
+
+		//TODO: Particle Reference shoudn't have a plane
 		plane = app->scene->CreateGameObject(app->scene->smoke, true);
-		plane->SetName("Particle");
+		plane->SetName("ParticleReference");
 		plane->CreateComponent(ComponentType::MESH_RENDERER);
 		plane->CreateComponent(ComponentType::BILLBOARD);
 

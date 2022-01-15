@@ -1,11 +1,11 @@
 #pragma once
 #include "ParticleEffect.h"
 
-class ParticleEffect_Force : ParticleEffect
+class ParticleEffect_Acceleration : ParticleEffect
 {
 public:
-	ParticleEffect_Force();
-	~ParticleEffect_Force();
+	ParticleEffect_Acceleration();
+	~ParticleEffect_Acceleration();
 
 	void Update(Particle& particle, float dt) override;
 	void OnEditor(int emitterIndex) override;
@@ -14,6 +14,5 @@ public:
 
 	bool hasGravity;
 	float gravity;
-	float3 direction;
-	float force;
+	float3 acceleration;
 };

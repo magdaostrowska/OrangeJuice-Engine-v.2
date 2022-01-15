@@ -7,6 +7,7 @@ public:
 	ParticleEffect_Velocity();
 	~ParticleEffect_Velocity();
 
+	void Init(Particle& particle) override;
 	void Update(Particle& particle, float dt) override;
 	void OnEditor(int emitterIndex) override;
 

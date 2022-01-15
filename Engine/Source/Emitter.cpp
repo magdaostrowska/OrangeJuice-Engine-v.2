@@ -4,8 +4,8 @@
 
 Emitter::Emitter()
 {
-	maxParticles = 20;
-	particlesPerSecond = 3;
+	maxParticles = 10;
+	particlesPerSecond = 1;
 	isActive = true;
 
 	particleReference = new Particle();
@@ -21,38 +21,40 @@ Emitter::~Emitter()
 {
 }
 
-void Emitter::EmitParticle(Particle& particle)
-{
-}
-
 void Emitter::Emit(float dt)
 {
 	currTimer -= dt;
 	if (currTimer <= 0.0f) {
+		
 		for (int i = 0; i < particlesBuff.size(); i++) {
-
 			// When the particle is allocated in memory, but it's not being used at the moment
 			// Reuse an exisiting particle to make the smaller complexity, which results in more optimized code 
 
-			if (particlesBuff[i].isActive == false)
+			if (particlesBuff[i]->isActive == false)
 			{
-				particlesBuff[i].isActive = true;
-				particlesBuff[i].position = particleReference->position;
-				particlesBuff[i].velocity = particleReference->velocity;
-				particlesBuff[i].acceleration = particleReference->acceleration;
-				particlesBuff[i].rotation = particleReference->rotation;
-				particlesBuff[i].size = particleReference->size;
-				particlesBuff[i].color = particleReference->color;
-				particlesBuff[i].lifeTime = particleReference->lifeTime;
+				particlesBuff[i]->isActive = true;
+				particlesBuff[i]->position = { 0,0,0 }; //particleReference->position;
+				particlesBuff[i]->velocity = { 0,0,0 }; //particleReference->velocity;
+				particlesBuff[i]->acceleration = { 0,0,0 }; //particleReference->acceleration;
+				particlesBuff[i]->rotation = particleReference->rotation;
+				particlesBuff[i]->size = particleReference->size;
+				particlesBuff[i]->color = particleReference->color;
+				particlesBuff[i]->lifeTime = particleReference->lifeTime;
 
+				for (int j = 0; j < effects.size(); j++)
+				{
+					if (effects[j] != nullptr)
+					{
+						effects[j]->Init(*particlesBuff[i]);
+					}
+				}
 				return;
 			}
 		}
 
-		// Create new particle
-	
 		if (particlesBuff.size() < maxParticles) {
-			Particle particle = new Particle(particleReference);
+			// Create new particle
+			Particle* particle = new Particle(particleReference);
 			particlesBuff.push_back(particle);
 		}
 		currTimer = timer;
@@ -63,30 +65,30 @@ void Emitter::Render()
 {
 	for (int i = 0; i < particlesBuff.size(); i++) {
 
-		if (particlesBuff[i].isActive == true)
+		if (particlesBuff[i]->isActive == true)
 		{
-			BillboardParticle* planeBillboard = (BillboardParticle*)particlesBuff[i].plane->GetComponent(ComponentType::BILLBOARD);
+			BillboardParticle* planeBillboard = (BillboardParticle*)particlesBuff[i]->plane->GetComponent(ComponentType::BILLBOARD);
 			if (planeBillboard != nullptr)
 			{
 				// TODO: RotateToFaceCamera() method
 			}
 
-			TransformComponent* planeTransform = (TransformComponent*)particlesBuff[i].plane->GetComponent(ComponentType::TRANSFORM);
+			TransformComponent* planeTransform = (TransformComponent*)particlesBuff[i]->plane->GetComponent(ComponentType::TRANSFORM);
 			if (planeTransform != nullptr)
 			{
-				planeTransform->SetTransform(particlesBuff[i].position, Quat::FromEulerXYZ(particlesBuff[i].rotation.x, particlesBuff[i].rotation.y, particlesBuff[i].rotation.z), particlesBuff[i].size);
+				planeTransform->SetTransform(particlesBuff[i]->position, Quat::FromEulerXYZ(particlesBuff[i]->rotation.x, particlesBuff[i]->rotation.y, particlesBuff[i]->rotation.z), particlesBuff[i]->size);
 			}
 
-			MaterialComponent* planeMaterial = (MaterialComponent*)particlesBuff[i].plane->GetComponent(ComponentType::MATERIAL);
+			MaterialComponent* planeMaterial = (MaterialComponent*)particlesBuff[i]->plane->GetComponent(ComponentType::MATERIAL);
 			if (planeMaterial != nullptr)
 			{
 				//planeMaterial
 			}
 
-			MeshComponent* planeMesh = (MeshComponent*)particlesBuff[i].plane->GetComponent(ComponentType::MESH_RENDERER);
+			MeshComponent* planeMesh = (MeshComponent*)particlesBuff[i]->plane->GetComponent(ComponentType::MESH_RENDERER);
 			if (planeMesh != nullptr)
 			{
-				planeMesh->colorNormal = particlesBuff[i].color;
+				planeMesh->colorNormal = particlesBuff[i]->color;
 			}
 		}
 	}
@@ -96,22 +98,23 @@ void Emitter::UpdateParticle(float dt)
 {
 	for (int i = 0; i < particlesBuff.size(); i++) {
 		
-		if (particlesBuff[i].isActive == true)
+		if (particlesBuff[i]->isActive == true)
 		{
-			particlesBuff[i].lifeTime -= dt;
-			/*particlesBuff[i].position += particlesBuff[i].velocity;
-			particlesBuff[i].velocity += particlesBuff[i].acceleration;*/
 			for (int j = 0; j < effects.size(); j++)
 			{
 				if (effects[j] != nullptr && isEffectActive(effects[j]->type))
 				{
-					effects[j]->Update(particlesBuff[i], dt);
+					effects[j]->Update(*particlesBuff[i], dt);
 				}
 			}
+
+			particlesBuff[i]->lifeTime -= dt;
+			particlesBuff[i]->velocity += particlesBuff[i]->acceleration;// * dt;
+			particlesBuff[i]->position += particlesBuff[i]->velocity;
 		}
 
-		if (particlesBuff[i].lifeTime <= 0)
-			particlesBuff[i].isActive = false;
+		if (particlesBuff[i]->lifeTime <= 0)
+			particlesBuff[i]->isActive = false;
 	}
 }
 
@@ -145,11 +148,13 @@ void Emitter::OnEditor(int emitterIndex)
 
 		guiName = "Particle Lifetime" + suffixLabel;
 		if (ImGui::DragFloat(guiName.c_str(), &particleReference->lifeTime)){}
-			//CalculatePoolSize();
 
 		guiName = "Particles per Second" + suffixLabel;
 		if (ImGui::DragFloat(guiName.c_str(), &particlesPerSecond))
 			SetParticlesPerSecond(particlesPerSecond);
+
+		guiName = "Max Particles" + suffixLabel;
+		if (ImGui::DragInt(guiName.c_str(), &maxParticles)){}
 
 		float size[2] = { particleReference->size.x, particleReference->size.y };
 
@@ -271,7 +276,7 @@ void Emitter::CreateParticleEffect(ParticleEffectType type)
 		effects[(int)ParticleEffectType::VELOCITY_OVER_LIFETIME] = effect;
 		break;
 	case ParticleEffectType::ACCELERATION_OVER_LIFETIME:
-		effect = (ParticleEffect*)new ParticleEffect_Force();
+		effect = (ParticleEffect*)new ParticleEffect_Acceleration();
 		effects[(int)ParticleEffectType::ACCELERATION_OVER_LIFETIME] = effect;
 		break;
 	default:
