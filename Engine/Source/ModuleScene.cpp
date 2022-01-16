@@ -455,6 +455,7 @@ GameObject* ModuleScene::CreateSmoke(float3 position)
 	transformComponent->position = position;
 
 	ParticleSystem* particleSystem = (ParticleSystem*)go->GetComponent(ComponentType::PARTICLE_SYSTEM);
+	particleSystem->looping = true;
 	Emitter* emitter = new Emitter(go);
 	particleSystem->SetEmitter(emitter);
 
@@ -494,7 +495,7 @@ GameObject* ModuleScene::CreateFirework(float3 position)
 
 void ModuleScene::Play()
 {
-	DEBUG_LOG("Saving Scene");
+	/*DEBUG_LOG("Saving Scene");
 
 	JsonParsing sceneFile;
 
@@ -510,19 +511,41 @@ void ModuleScene::Play()
 	else
 		DEBUG_LOG("Scene couldn't be saved");
 
-	RELEASE_ARRAY(buf);
+	RELEASE_ARRAY(buf);*/
 	
 	gameState = GameState::PLAYING;
 	gameTimer.ResetTimer();
+
+	ParticleSystem* particleSys1 = (ParticleSystem *) smoke1->GetComponent(ComponentType::PARTICLE_SYSTEM);
+	if (particleSys1 != nullptr) {
+		particleSys1->Play();
+	}
+	ParticleSystem* particleSys2 = (ParticleSystem*)smoke2->GetComponent(ComponentType::PARTICLE_SYSTEM);
+	if (particleSys1 != nullptr) {
+		particleSys2->Play();
+	}
 }
 
 void ModuleScene::Stop()
 {
-	LoadScene("Assets/Scenes/scenePlay.orangeJuice");
+	/*LoadScene("Assets/Scenes/scenePlay.orangeJuice");
 	app->fs->RemoveFile("Assets/Scenes/scenePlay.orangeJuice");
 	qTree.Clear();
-	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));
+	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));*/
 	gameState = GameState::NOT_PLAYING;
+
+	
+	ParticleSystem* particleSys1 = (ParticleSystem*)smoke1->GetComponent(ComponentType::PARTICLE_SYSTEM);
+	if (particleSys1 != nullptr)
+	{
+		particleSys1->Stop();
+	}
+	
+	ParticleSystem* particleSys2 = (ParticleSystem*)smoke2->GetComponent(ComponentType::PARTICLE_SYSTEM);
+	if (particleSys2 != nullptr)
+	{
+		particleSys2->Stop();
+	}
 }
 
 void ModuleScene::Pause()

@@ -28,9 +28,12 @@ public:
 
 	void ReadConfig(JsonParsing& node);
 	void SaveConfig(JsonParsing& node);
-private:
+
+public:
 
 	bool isRunning;
+
+private:
 
 	// Normal timings
 	int started_at, stopped_at;

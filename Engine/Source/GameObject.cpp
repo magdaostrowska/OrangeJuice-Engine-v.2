@@ -243,8 +243,11 @@ Component* GameObject::GetComponent(ComponentType type)
 {
 	for (int i = 0; i < components.size(); i++)
 	{
-		if(components[i]->GetType() == type)
-			return components[i];
+		if (components[i] != nullptr)
+		{
+			if (components[i]->GetType() == type)
+				return components[i];
+		}
 	}
 
 	return nullptr;

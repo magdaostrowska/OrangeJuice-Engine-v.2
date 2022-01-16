@@ -13,7 +13,7 @@ public:
 	~BillboardParticle();
 
 	bool Update(float dt) override;
-	void RotateToFaceCamera(); //Billboard particles are flat textured quads that are rotated to always face the camera
+	Quat RotateToFaceCamera(); //Billboard particles are flat textured quads that are rotated to always face the camera
 
 	void OnEditor() override;
 

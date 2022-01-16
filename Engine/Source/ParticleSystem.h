@@ -29,14 +29,15 @@ public:
 	bool OnLoad(JsonParsing& node) override;
 	bool OnSave(JsonParsing& node, JSON_Array* array) override;
 
+public:
+
+	bool looping = false;
+
 protected:
 
 	std::vector<Emitter*> emitters;
-
-	bool isActive;
-	bool looping = false;
 	float maxDuration = 0.0f;
+	bool isActive;
 	GameTimer timer;
-
 	TransformComponent* transform;
 };

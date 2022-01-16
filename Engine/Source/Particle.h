@@ -13,6 +13,7 @@ public:
 	Particle() {
 		lifeTime = 1.5f;
 		rotation = { 90.0f,0.0f,0.0f };
+		rotationQuat = Quat::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
 		acceleration = { 0.0f,0.0f,0.0f };
 		size = { 0.5f,0.5f,0.5f };
 		velocity = { 0.0f,0.0f,0.0f };
@@ -54,7 +55,7 @@ public:
 	bool OnLoad(JsonParsing& node) 
 	{
 		lifeTime = node.GetJsonNumber("Particle: LifeTime");
-		rotation = node.GetJson3Number(node, "Particle: Rotation");
+		//rotation = node.GetJson3Number(node, "Particle: Rotation");
 		acceleration = node.GetJson3Number(node, "Particle: Acceleration");
 		size = node.GetJson3Number(node, "Particle: Size");
 		velocity = node.GetJson3Number(node, "Particle: Velocity");
@@ -68,7 +69,7 @@ public:
 	{
 		JsonParsing file = JsonParsing();
 		file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Particle: LifeTime", lifeTime);
-		file.SetNewJson3Number(file, "Particle: Rotation", rotation);
+		//file.SetNewJson3Number(file, "Particle: Rotation", Quat:: rotation);
 		file.SetNewJson3Number(file, "Particle: Acceleration", acceleration);
 		file.SetNewJson3Number(file, "Particle: Size", size);
 		file.SetNewJson3Number(file, "Particle: Velocity", velocity);
@@ -84,6 +85,7 @@ public:
 public:
 
 	float lifeTime;
+	Quat rotationQuat;
 	float3 rotation, acceleration;
 	float3 size;
 	float3 velocity, position, direction;

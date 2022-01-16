@@ -85,7 +85,8 @@ void Emitter::Render()
 			BillboardParticle* planeBillboard = (BillboardParticle*)particlesBuff[i]->plane->GetComponent(ComponentType::BILLBOARD);
 			if (planeBillboard != nullptr)
 			{
-				// TODO: RotateToFaceCamera() method
+				//particlesBuff[i]->rotation = planeBillboard->RotateToFaceCamera();
+				//particlesBuff[i]->rotation 
 			}
 
 			TransformComponent* planeTransform = (TransformComponent*)particlesBuff[i]->plane->GetComponent(ComponentType::TRANSFORM);
@@ -388,9 +389,13 @@ bool Emitter::OnSave(JsonParsing& node, JSON_Array* array)
 	file.SetNewJson3Number(file, "Emitter: Max Velocity", maxVelocity);
 	node.SetValueToArray(array, file.GetRootValue());
 
+
 	for (int i = 0; i < effects.size(); i++)
 	{
-		effects[i]->OnSave(node, array);
+		if (effects[i] != nullptr)
+		{
+			effects[i]->OnSave(node, array);
+		}
 	}
 
 	return true;

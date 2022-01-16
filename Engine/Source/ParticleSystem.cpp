@@ -28,10 +28,13 @@ void ParticleSystem::SetEmitter(Emitter* emitter)
 
 bool ParticleSystem::Update(float dt) 
 {
-    for (int i = 0; i < emitters.size(); i++) {
-        emitters[i]->Update(dt);
+    if (isActive && (((float)timer.GetTime())/1000.0f < maxDuration || looping == true))
+    {
+        for (int i = 0; i < emitters.size(); i++) {
+            emitters[i]->Update(dt);
+        }
     }
-
+    
     return true;
 }
 

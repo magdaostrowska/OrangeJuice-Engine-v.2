@@ -36,10 +36,10 @@ public:
 	TransformComponent* transform;
 	Frustum camera;
 
-private:
-	
 	Quat currentRotation;
 	float3 currentPos;
+
+private:
 
 	float nearPlane;
 	float farPlane;
