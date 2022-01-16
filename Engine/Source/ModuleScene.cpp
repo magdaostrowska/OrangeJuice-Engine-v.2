@@ -464,6 +464,10 @@ GameObject* ModuleScene::CreateSmoke(float3 position)
 	velocityEffect->minVelocity = {-0.03f,0.1f,-0.03f};
 	velocityEffect->maxVelocity = { 0.03f,0.1f,0.03f };
 
+	go->CreateComponent(ComponentType::MATERIAL);
+	MaterialComponent* smokeMaterial1 = (MaterialComponent*)go->GetComponent(ComponentType::MATERIAL);
+	
+
 	return go;
 }
 
@@ -476,9 +480,11 @@ GameObject* ModuleScene::CreateFirework(float3 position)
 	transformComponent->position = position;
 
 	ParticleSystem* particleSystem = (ParticleSystem*)go->GetComponent(ComponentType::PARTICLE_SYSTEM);
+	particleSystem->Play();
 	Firework* firework = new Firework(go);
 	//Emitter* emitter = new Emitter(go);
 	particleSystem->SetEmitter((Emitter*)firework);
+	particleSystem->looping = true;
 	
 	return go;
 }

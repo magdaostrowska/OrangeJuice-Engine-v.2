@@ -21,7 +21,7 @@ public:
 
 	virtual void Emit(float dt);
 	void Render();
-	void UpdateParticle(float dt);
+	virtual void UpdateParticle(float dt);
 	virtual void Update(float dt);
 
 	void OnEditor(int emitterIndex);
@@ -60,7 +60,7 @@ public:
 	float currTimer;
 	
 private:
-
+	
 	char charsOfName[50];
 	bool showTexMenu;
 	LCG random;

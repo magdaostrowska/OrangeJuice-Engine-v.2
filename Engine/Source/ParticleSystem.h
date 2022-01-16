@@ -32,11 +32,11 @@ public:
 public:
 
 	bool looping = false;
+	float maxDuration = 0.0f;
 
 protected:
 
 	std::vector<Emitter*> emitters;
-	float maxDuration = 0.0f;
 	bool isActive;
 	GameTimer timer;
 	TransformComponent* transform;

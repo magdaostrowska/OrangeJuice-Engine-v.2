@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <GL/glew.h>
+#include "Dialogs.h"
 
 ParticleSystem::ParticleSystem(GameObject* own, TransformComponent* trans, uint numParticles)
 {
@@ -58,6 +59,16 @@ void ParticleSystem::OnEditor()
 
         ImGui::Checkbox("Looping", &looping);
         ImGui::SliderFloat("Duration", &maxDuration, 0.0f, 10.0f);
+
+        if (ImGui::Button("Save template"))
+        {
+            if (app->scene->SceneDirectory().empty())
+            {
+                std::string filePath = Dialogs::SaveFile("Orange Juice Scene (*.orangeJuice)\0*.orangeJuice\0");
+                if (!filePath.empty()) app->scene->SaveScene(filePath.c_str());
+            }
+            else app->scene->SaveScene(app->scene->SceneDirectory().c_str());
+        }
 
         ImGui::Spacing();
         std::string guiName = "";

@@ -10,7 +10,8 @@ Emitter::Emitter(GameObject* owner)
 	particlesPerSecond = 70;
 	isActive = true;
 
-	particleReference = new Particle();
+	own = owner;
+	particleReference = new Particle(own);
 	effects.resize(5);
 
 	timer = 1.0f/particlesPerSecond;
@@ -23,8 +24,6 @@ Emitter::Emitter(GameObject* owner)
 
 	minLifeTime = 0.7f;
 	maxLifeTime = 1.7f;
-
-	own = owner;
 }
 
 Emitter::~Emitter()
@@ -68,7 +67,7 @@ void Emitter::Emit(float dt)
 
 		if (particlesBuff.size() < maxParticles) {
 			// Create new particle
-			Particle* particle = new Particle(particleReference);
+			Particle* particle = new Particle(particleReference, own);
 			particlesBuff.push_back(particle);
 			SetParticleTexture(*particle);
 		}
@@ -125,7 +124,7 @@ void Emitter::UpdateParticle(float dt)
 			}
 
 			particlesBuff[i]->lifeTime -= dt;
-			particlesBuff[i]->velocity += particlesBuff[i]->acceleration;// * dt;
+			particlesBuff[i]->velocity += particlesBuff[i]->acceleration * dt;// * dt;
 			particlesBuff[i]->position += particlesBuff[i]->velocity;
 		}
 

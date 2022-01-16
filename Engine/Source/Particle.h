@@ -10,7 +10,7 @@ class Particle {
 public:
 
 	// This constructor is made to create the particle reference only
-	Particle() {
+	Particle(GameObject* parent) {
 		lifeTime = 1.5f;
 		rotation = { 90.0f,0.0f,0.0f };
 		rotationQuat = Quat::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
@@ -23,16 +23,16 @@ public:
 		isActive = true;
 
 		//TODO: Particle Reference shoudn't have a plane
-		plane = app->scene->CreateGameObject(app->scene->smoke1, true);
+		plane = app->scene->CreateGameObject(parent, true);
 		plane->SetName("ParticleReference");
 		plane->CreateComponent(ComponentType::MESH_RENDERER);
 		plane->CreateComponent(ComponentType::BILLBOARD);
 
-		ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx"), *plane);
+		ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/smokePlane.fbx"), *plane);
 	}
 
 	// This constructor should be used by default
-	Particle(Particle* particleReference) 
+	Particle(Particle* particleReference, GameObject* parent)
 	{
 		lifeTime = particleReference->lifeTime;
 		rotation = particleReference->rotation;
@@ -44,13 +44,15 @@ public:
 		tex = particleReference->tex;
 		isActive = particleReference->isActive;
 
-		plane = app->scene->CreateGameObject(app->scene->smoke1, true);
+		plane = app->scene->CreateGameObject(parent, true);
 		plane->SetName("Particle");
 		plane->CreateComponent(ComponentType::MESH_RENDERER);
 		plane->CreateComponent(ComponentType::BILLBOARD);
 
 		ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx"), *plane);
 	}
+
+	~Particle() {}
 
 	bool OnLoad(JsonParsing& node) 
 	{

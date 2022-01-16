@@ -8,13 +8,13 @@ class Firework : Emitter {
 public:
 	Firework(GameObject* owner);
 	void Update(float dt) override;
+	void UpdateParticle(float dt) override;
 	void Emit(float dt) override;
 
 	bool OnLoad(JsonParsing& node) override;
 	bool OnSave(JsonParsing& node, JSON_Array* array) override;
 
 public:
-
+	std::vector<bool> particlesRandomized;
 	float limitY;
-	bool directionChanged;
 };
