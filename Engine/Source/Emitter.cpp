@@ -7,7 +7,7 @@ Emitter::Emitter(GameObject* owner)
 {
 	particlesBuff.resize(0);
 	maxParticles = 200;
-	particlesPerSecond = 70;
+	particlesPerSecond = 50;
 	isActive = true;
 
 	own = owner;
@@ -18,9 +18,6 @@ Emitter::Emitter(GameObject* owner)
 	currTimer = timer;
 
 	showTexMenu = false;
-
-	minVelocity = {0.0f, 0.0f, 0.0f};
-	maxVelocity = { 1.0f, 1.0f, 1.0f };
 
 	minLifeTime = 0.7f;
 	maxLifeTime = 1.7f;
@@ -272,7 +269,7 @@ void Emitter::OnEditor(int emitterIndex)
 void Emitter::SetParticlesPerSecond(float particlesPerSec)
 {
 	particlesPerSecond = particlesPerSec;
-	//timer = 1.0f / particlesPerSecond;
+	timer = 1.0f / particlesPerSecond;
 }
 
 void Emitter::CreateParticleEffect(ParticleEffectType type)
@@ -361,8 +358,6 @@ bool Emitter::OnLoad(JsonParsing& node)
 	maxLifeTime = node.GetJsonNumber("Emitter: Max Life Time");
 	timer = node.GetJsonNumber("Emitter: Timer");
 	currTimer = node.GetJsonNumber("Emitter: Current Timer");
-	minVelocity = node.GetJson3Number(node, "Emitter: Min Velocity");
-	minVelocity = node.GetJson3Number(node, "Emitter: Max Velocity");
 
 	for (int i = 0; i < effects.size(); i++)
 	{
@@ -384,8 +379,6 @@ bool Emitter::OnSave(JsonParsing& node, JSON_Array* array)
 	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Emitter: Max Life Time", maxLifeTime);
 	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Emitter: Timer", timer);
 	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Emitter: Current Timer", currTimer);
-	file.SetNewJson3Number(file, "Emitter: Min Velocity", minVelocity);
-	file.SetNewJson3Number(file, "Emitter: Max Velocity", maxVelocity);
 	node.SetValueToArray(array, file.GetRootValue());
 
 

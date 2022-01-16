@@ -457,11 +457,15 @@ GameObject* ModuleScene::CreateSmoke(float3 position)
 	ParticleSystem* particleSystem = (ParticleSystem*)go->GetComponent(ComponentType::PARTICLE_SYSTEM);
 	particleSystem->looping = true;
 	Emitter* emitter = new Emitter(go);
+	emitter->maxParticles = 100;
+	emitter->particlesPerSecond = 30;
+	emitter->minLifeTime = 0.5f;
+	emitter->maxLifeTime = 1.5f;
 	particleSystem->SetEmitter(emitter);
 
 	emitter->CreateParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
 	ParticleEffect_Velocity* velocityEffect = (ParticleEffect_Velocity*) emitter->GetParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
-	velocityEffect->minVelocity = {-0.03f,0.1f,-0.03f};
+	velocityEffect->minVelocity = {-0.03f,0.05f,-0.03f};
 	velocityEffect->maxVelocity = { 0.03f,0.1f,0.03f };
 
 	go->CreateComponent(ComponentType::MATERIAL);

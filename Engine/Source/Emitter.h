@@ -50,9 +50,6 @@ public:
 	Particle* particleReference;
 	GameObject* own;
 
-	float3 minVelocity;
-	float3 maxVelocity;
-
 	float minLifeTime;
 	float maxLifeTime;
 

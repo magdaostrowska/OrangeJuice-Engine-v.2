@@ -13,7 +13,8 @@ public:
 
 	bool OnLoad(JsonParsing& node) override;
 	bool OnSave(JsonParsing& node, JSON_Array* array) override;
-
+private:
+	void KillParticles();
 public:
 	std::vector<bool> particlesRandomized;
 	float limitY;

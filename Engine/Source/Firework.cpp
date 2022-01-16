@@ -6,12 +6,25 @@ Firework::Firework(GameObject* owner) : Emitter(owner)
 	isActive = true;
 	particlesBuff.resize(0);
 	own = owner;
-	maxParticles = 100;
+	maxParticles = 100; 
+	particlesBuff.resize(maxParticles);
+	for (int i = 0; i < particlesBuff.size(); i++) {
+		// Create new particle
+		Particle* particle = new Particle(particleReference, own);
+		particlesBuff[i] = particle;
+		SetParticleTexture(*particle);
+
+		particle->velocity = { 0.0f, 1.0f, 0.0f };
+	}
+
+	particlesPerSecond = 20;
+	timer = 1.0f / particlesPerSecond;
+	currTimer = timer;
+
 	particlesRandomized.resize(maxParticles);
 	for (int i = 0; i < maxParticles; i++) {
-		particlesRandomized[i] = false;
+		particlesRandomized.push_back(false);
 	}
-	//particleReference->lifeTime = 15.0f;
 
 	CreateParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
 	ParticleEffect_Velocity* velocityEffect = (ParticleEffect_Velocity*)GetParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
@@ -27,14 +40,13 @@ void Firework::Update(float dt)
 		if (particlesBuff[i]->isActive == true) {
 			
 			if (particlesBuff[i]->position.y >= limitY && particlesRandomized[i] == false) {
-				ParticleEffect_Velocity* velocityEffect = (ParticleEffect_Velocity*)GetParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
-				velocityEffect->minVelocity = { -0.5f, -0.2f, -0.5f };
-				velocityEffect->maxVelocity = { 0.0f, 0.2f, 0.5f };
+				float3 minVelocity = { -0.5f, 0.0f, -0.5f };
+				float3 maxVelocity = { 0.5f, 0.0f, 0.5f };
 				LCG random;
 				float randomVel_x = random.Float(minVelocity.x, maxVelocity.x);
 				float randomVel_y = random.Float(minVelocity.y, maxVelocity.y);
 				float randomVel_z = random.Float(minVelocity.z, maxVelocity.z);
-				particlesBuff[i]->velocity = float3(randomVel_x, randomVel_y,randomVel_z );
+				particlesBuff[i]->velocity = float3(randomVel_x, randomVel_y,randomVel_z);
 
 				CreateParticleEffect(ParticleEffectType::ACCELERATION_OVER_LIFETIME);
 				ParticleEffect_Acceleration* accelerationEffect = (ParticleEffect_Acceleration*)GetParticleEffect(ParticleEffectType::ACCELERATION_OVER_LIFETIME);
@@ -94,27 +106,42 @@ void Firework::Emit(float dt)
 {
 	currTimer -= dt;
 	if (currTimer <= 0.0f) {
-		if (particlesBuff.size() < maxParticles) {
-			// Create new particle
-			Particle* particle = new Particle(particleReference, own);
-			particlesBuff.push_back(particle);
-			SetParticleTexture(*particle);
-
-			for (int j = 0; j < effects.size(); j++)
-			{
-				if (effects[j] != nullptr)
+		currTimer = timer;
+		for (int i = 0; i < particlesBuff.size(); i++) {
+			
+			if (particlesRandomized[i] == false) {
+				TransformComponent* transform = (TransformComponent*)own->GetComponent(ComponentType::TRANSFORM);
+				if (transform != nullptr)
 				{
-					effects[j]->Init(*particle);
+					if (particlesBuff[i]->isActive == false)
+					{
+						particlesBuff[i]->isActive = true;
+						particlesBuff[i]->position = transform->position;
+						particlesBuff[i]->rotation = particleReference->rotation;
+						particlesBuff[i]->size = particleReference->size;
+						particlesBuff[i]->color = particleReference->color;
+						particlesBuff[i]->lifeTime = particleReference->lifeTime;
+
+						SetParticleTexture(*particlesBuff[i]);
+
+						for (int j = 0; j < effects.size(); j++)
+						{
+							if (effects[j] != nullptr)
+							{
+								effects[j]->Init(*particlesBuff[i]);
+							}
+						}
+						return;
+					}
 				}
 			}
 		}
-		else {
-			/*ParticleSystem* particleSystem = (ParticleSystem*)own->GetComponent(ComponentType::PARTICLE_SYSTEM);
-			particleSystem->looping = false;
-			particleSystem->Stop();
-			particleSystem->Play();*/
+		bool finished = false;
+		for (int i = 0; i < particlesRandomized.size(); i++) {
+			if (particlesRandomized[i] == true) finished = true;
 		}
-		currTimer = timer;
+		if (finished == true)
+			KillParticles(); //TODO: Add a timer to kill them later
 	}
 }
 
@@ -130,4 +157,14 @@ bool Firework::OnSave(JsonParsing& node, JSON_Array* array)
 	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "LimitY", limitY);
 	node.SetValueToArray(array, file.GetRootValue());
 	return true;
+}
+
+void Firework::KillParticles()
+{
+	for (int i = 0; i < particlesBuff.size(); i++) {
+		if(particlesBuff[i]->isActive == false){
+			TransformComponent* trans = (TransformComponent*)particlesBuff[i]->plane->GetComponent(ComponentType::TRANSFORM);
+			trans->SetTransform({ -9999999, -9999999, -9999999 }, Quat::identity, { 0.0, 0.0, 0.0 });
+		}
+	}
 }
