@@ -20,14 +20,13 @@ public:
 	~ParticleSystem();
 
 	void SetEmitter(Emitter* emitter);
-	virtual void Render();
 	bool Update(float dt) override;
 	void OnEditor() override;
 	
 	void Play();
 	void Stop();
 
-private:
+protected:
 
 	std::vector<Emitter*> emitters;
 

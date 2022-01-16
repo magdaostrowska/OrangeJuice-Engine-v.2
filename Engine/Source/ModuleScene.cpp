@@ -14,6 +14,8 @@
 
 #include "Profiling.h"
 #include "ParticleSystem.h"
+#include "ModuleInput.h"
+#include "Firework.h"
 
 ModuleScene::ModuleScene() : sceneDir(""), mainCamera(nullptr), gameState(GameState::NOT_PLAYING), frameSkip(0), resetQuadtree(true), goToRecalculate(nullptr)
 {
@@ -44,7 +46,7 @@ bool ModuleScene::Start()
 	street = CreateGameObject(root, true);
 	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"), *street);
 
-	smoke1 = CreateSmoke(float3{ 21.9f,10.14f,42.54f });
+	smoke1 = CreateSmoke(float3{ 21.9f,10.17f,42.54f });
 	smoke2 = CreateSmoke(float3{ -31.09f,7.99f,-26.33f });
 	
 	return true;
@@ -111,6 +113,10 @@ bool ModuleScene::Update(float dt)
 				objects.push(go->GetChilds()[i]);
 		}
 		resetQuadtree = false;
+	}
+
+	if (app->input->GetKey(SDL_SCANCODE_1) == KeyState::KEY_DOWN) {
+		CreateFirework({ 0,0,0 });
 	}
 
 	return true;
@@ -463,31 +469,16 @@ GameObject* ModuleScene::CreateSmoke(float3 position)
 GameObject* ModuleScene::CreateFirework(float3 position)
 {
 	GameObject* go = CreateGameObject(root);
-	/*go->SetName("Firework");
+	go->SetName("Firework");
 	go->CreateComponent(ComponentType::PARTICLE_SYSTEM);
 	TransformComponent* transformComponent = (TransformComponent*)go->GetComponent(ComponentType::TRANSFORM);
 	transformComponent->position = position;
 
 	ParticleSystem* particleSystem = (ParticleSystem*)go->GetComponent(ComponentType::PARTICLE_SYSTEM);
-	Emitter* emitter = new Emitter(go);
-	particleSystem->SetEmitter(emitter);
-
-	emitter->CreateParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
-	ParticleEffect_Velocity* velocityEffect = (ParticleEffect_Velocity*)emitter->GetParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
-	velocityEffect->minVelocity = { -0.03f,0.1f,-0.03f };
-	velocityEffect->maxVelocity = { 0.03f,0.1f,0.03f };
-
-	emitter->CreateParticleEffect(ParticleEffectType::ACCELERATION_OVER_LIFETIME);
-	ParticleEffect_Acceleration* accelerationEffect = (ParticleEffect_Acceleration*)emitter->GetParticleEffect(ParticleEffectType::ACCELERATION_OVER_LIFETIME);
-
-	float3 limit = position;
-	limit.y = 20;
-
-	if (true)
-	{
-
-	}
-	*/
+	Firework* firework = new Firework(go);
+	//Emitter* emitter = new Emitter(go);
+	particleSystem->SetEmitter((Emitter*)firework);
+	
 	return go;
 }
 

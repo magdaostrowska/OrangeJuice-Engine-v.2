@@ -194,6 +194,7 @@
     <ClCompile Include="Engine\Source\ContentBrowserMenu.cpp" />
     <ClCompile Include="Engine\Source\Emitter.cpp" />
     <ClCompile Include="Engine\Source\FileSystem.cpp" />
+    <ClCompile Include="Engine\Source\Firework.cpp" />
     <ClCompile Include="Engine\Source\Framebuffer.cpp" />
     <ClCompile Include="Engine\Source\GameObject.cpp" />
     <ClCompile Include="Engine\Source\GameTimer.cpp" />

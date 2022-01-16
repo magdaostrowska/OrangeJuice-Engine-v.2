@@ -481,6 +481,7 @@
       <Filter>Sources\Particles\Effects</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Source\ParticleEffect_Color.cpp" />
+    <ClCompile Include="Engine\Source\Firework.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OrangeJuice Engine.rc" />

@@ -11,7 +11,7 @@ public:
 
 	// This constructor is made to create the particle reference only
 	Particle() {
-		lifeTime = 10.0f;
+		lifeTime = 1.5f;
 		rotation = { 90.0f,0.0f,0.0f };
 		acceleration = { 0.0f,0.0f,0.0f };
 		size = { 0.5f,0.5f,0.5f };

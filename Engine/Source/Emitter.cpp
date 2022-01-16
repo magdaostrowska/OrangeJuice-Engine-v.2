@@ -5,8 +5,9 @@
 
 Emitter::Emitter(GameObject* owner)
 {
+	particlesBuff.resize(0);
 	maxParticles = 200;
-	particlesPerSecond = 20;
+	particlesPerSecond = 70;
 	isActive = true;
 
 	particleReference = new Particle();
@@ -20,8 +21,10 @@ Emitter::Emitter(GameObject* owner)
 	minVelocity = {0.0f, 0.0f, 0.0f};
 	maxVelocity = { 1.0f, 1.0f, 1.0f };
 
-	own = owner;
+	minLifeTime = 0.7f;
+	maxLifeTime = 1.7f;
 
+	own = owner;
 }
 
 Emitter::~Emitter()
@@ -158,8 +161,13 @@ void Emitter::OnEditor(int emitterIndex)
 		ImGui::Separator();
 		ImGui::Indent();
 
-		guiName = "Particle Lifetime" + suffixLabel;
-		if (ImGui::DragFloat(guiName.c_str(), &particleReference->lifeTime)){}
+		guiName = "Particle min lifetime" + suffixLabel;
+		ImGui::DragFloat(guiName.c_str(), &minLifeTime, 0.1f, 0.0f, 10.0f);
+
+		guiName = "Particle max lifetime" + suffixLabel;
+		ImGui::DragFloat(guiName.c_str(), &maxLifeTime, 0.1f, 0.0f, 10.0f);
+		
+		particleReference->lifeTime = random.Float(minLifeTime, maxLifeTime);
 
 		guiName = "Particles per Second" + suffixLabel;
 		if (ImGui::DragFloat(guiName.c_str(), &particlesPerSecond))

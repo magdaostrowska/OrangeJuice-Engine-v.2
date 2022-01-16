@@ -25,18 +25,12 @@ void ParticleSystem::SetEmitter(Emitter* emitter)
     emitters.push_back(emitter);
 }
 
-void ParticleSystem::Render()
-{
-
-}
 
 bool ParticleSystem::Update(float dt) 
 {
     for (int i = 0; i < emitters.size(); i++) {
         emitters[i]->Update(dt);
     }
-
-    Render();
 
     return true;
 }

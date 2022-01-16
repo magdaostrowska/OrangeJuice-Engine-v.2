@@ -1,14 +1,17 @@
 #pragma once
-#include "ParticleSystem.h"
+#include "Emitter.h"
+#include "GameObject.h"
+#include "MathGeoLib/src/Algorithm/Random/LCG.h"
 
-class Firework : ParticleSystem {
+class Firework : Emitter {
+
+public:
+	Firework(GameObject* owner);
+	void Update(float dt) override;
+	void Emit(float dt) override;
 
 public:
 
-	float3 limit;
-
-
-
-
-
+	float limitY;
+	bool directionChanged;
 };

@@ -10,6 +10,7 @@
 #include "ParticleEffect_Acceleration.h"
 #include "ParticleEffect_Size.h"
 #include "MathGeoLib/src/Geometry/Frustum.h"
+#include "MathGeoLib/src/Algorithm/Random/LCG.h"
 #include <string>
 
 class Emitter {
@@ -18,10 +19,10 @@ public:
 	Emitter(GameObject* owner);
 	~Emitter();
 
-	void Emit(float dt);
+	virtual void Emit(float dt);
 	void Render();
 	void UpdateParticle(float dt);
-	void Update(float dt);
+	virtual void Update(float dt);
 
 	void OnEditor(int emitterIndex);
 	void SetParticlesPerSecond(float particlesPerSec);
@@ -31,7 +32,7 @@ public:
 	std::string GetNameFromEffect(ParticleEffectType type);
 	ParticleEffect* GetParticleEffect(ParticleEffectType type);
 
-private:
+protected:
 	void SetParticleTexture(Particle& particle);
 public:
 
@@ -42,11 +43,15 @@ public:
 
 	std::vector<ParticleEffect*> effects;
 	std::vector<Particle*> particlesBuff;
+	std::vector<Particle*> fireworkParticlesBuff;
 	Particle* particleReference;
 	GameObject* own;
 
 	float3 minVelocity;
 	float3 maxVelocity;
+
+	float minLifeTime;
+	float maxLifeTime;
 
 	float timer;
 	float currTimer;
@@ -55,4 +60,5 @@ private:
 
 	char charsOfName[50];
 	bool showTexMenu;
+	LCG random;
 };
