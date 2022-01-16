@@ -351,6 +351,51 @@ ParticleEffect* Emitter::GetParticleEffect(ParticleEffectType type)
 	}
 }
 
+bool Emitter::OnLoad(JsonParsing& node)
+{
+	maxParticles = node.GetJsonNumber("Emitter: Max Particles");
+	particlesPerSecond = node.GetJsonNumber("Emitter: Particles Per Second");
+	isActive = node.GetJsonBool("Emitter: Is Active");
+	toDelete = node.GetJsonBool("Emitter: To Delete");
+	minLifeTime = node.GetJsonNumber("Emitter: Min Life Time");
+	maxLifeTime = node.GetJsonNumber("Emitter: Max Life Time");
+	timer = node.GetJsonNumber("Emitter: Timer");
+	currTimer = node.GetJsonNumber("Emitter: Current Timer");
+	minVelocity = node.GetJson3Number(node, "Emitter: Min Velocity");
+	minVelocity = node.GetJson3Number(node, "Emitter: Max Velocity");
+
+	for (int i = 0; i < effects.size(); i++)
+	{
+		effects[i]->OnLoad(node);
+	}
+
+	return true;
+}
+
+bool Emitter::OnSave(JsonParsing& node, JSON_Array* array)
+{
+	JsonParsing file = JsonParsing();
+
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Emitter: Max Particles", maxParticles);
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Emitter: Particles Per Second", particlesPerSecond);
+	file.SetNewJsonBool(file.ValueToObject(file.GetRootValue()), "Emitter: Is Active", isActive);
+	file.SetNewJsonBool(file.ValueToObject(file.GetRootValue()), "Emitter: To Delete", toDelete);
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Emitter: Min Life Time", minLifeTime);
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Emitter: Max Life Time", maxLifeTime);
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Emitter: Timer", timer);
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Emitter: Current Timer", currTimer);
+	file.SetNewJson3Number(file, "Emitter: Min Velocity", minVelocity);
+	file.SetNewJson3Number(file, "Emitter: Max Velocity", maxVelocity);
+	node.SetValueToArray(array, file.GetRootValue());
+
+	for (int i = 0; i < effects.size(); i++)
+	{
+		effects[i]->OnSave(node, array);
+	}
+
+	return true;
+}
+
 void Emitter::SetParticleTexture(Particle& particle)
 {
 	MaterialComponent* matRef = (MaterialComponent*)particleReference->plane->GetComponent(ComponentType::MATERIAL);

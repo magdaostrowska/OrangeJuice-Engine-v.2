@@ -69,6 +69,11 @@ void ParticleSystem::OnEditor()
             emitters[i]->OnEditor(i);
         }
 
+        if (ImGui::Button("Create Emitter")) {
+            Emitter* emitter = new Emitter(owner);
+            emitters.push_back(emitter);
+        }
+
         ImGui::Separator();
     }
 }
@@ -87,4 +92,34 @@ void ParticleSystem::Stop()
 {
     timer.Stop();
     isActive = false;
+}
+
+bool ParticleSystem::OnLoad(JsonParsing& node)
+{
+    isActive = node.GetJsonBool("PS: Is Active");
+    looping = node.GetJsonBool("PS: Max Duration");
+    maxDuration = node.GetJsonNumber("PS: Max Duration");
+
+    for (int i = 0; i < emitters.size(); i++)
+    {
+        emitters[i]->OnLoad(node);
+    }
+
+    return false;
+}
+
+bool ParticleSystem::OnSave(JsonParsing& node, JSON_Array* array)
+{
+    JsonParsing file = JsonParsing();
+    file.SetNewJsonBool(file.ValueToObject(file.GetRootValue()), "PS: Is Active", isActive);
+    file.SetNewJsonBool(file.ValueToObject(file.GetRootValue()),"PS: Looping", looping);
+    file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "PS: Max Duration", maxDuration);
+    node.SetValueToArray(array, file.GetRootValue());
+
+    for (int i = 0; i < emitters.size(); i++)
+    {
+        emitters[i]->OnSave(node, array);
+    }
+
+    return true;
 }

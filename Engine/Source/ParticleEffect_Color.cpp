@@ -22,3 +22,13 @@ void ParticleEffect_Color::Update(Particle& particle, float dt)
 void ParticleEffect_Color::OnEditor(int emitterIndex)
 {
 }
+
+bool ParticleEffect_Color::OnLoad(JsonParsing& node)
+{
+	return true;
+}
+
+bool ParticleEffect_Color::OnSave(JsonParsing& node, JSON_Array* array)
+{
+	return true;
+}

@@ -51,6 +51,36 @@ public:
 		ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/plane.fbx"), *plane);
 	}
 
+	bool OnLoad(JsonParsing& node) 
+	{
+		lifeTime = node.GetJsonNumber("Particle: LifeTime");
+		rotation = node.GetJson3Number(node, "Particle: Rotation");
+		acceleration = node.GetJson3Number(node, "Particle: Acceleration");
+		size = node.GetJson3Number(node, "Particle: Size");
+		velocity = node.GetJson3Number(node, "Particle: Velocity");
+		position = node.GetJson3Number(node, "Particle: Position");
+		direction = node.GetJson3Number(node, "Particle: Direction");;
+		isActive = node.GetJsonBool("Particle: Is Active");
+		return true;
+	}
+
+	bool OnSave(JsonParsing& node, JSON_Array* array) 
+	{
+		JsonParsing file = JsonParsing();
+		file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Particle: LifeTime", lifeTime);
+		file.SetNewJson3Number(file, "Particle: Rotation", rotation);
+		file.SetNewJson3Number(file, "Particle: Acceleration", acceleration);
+		file.SetNewJson3Number(file, "Particle: Size", size);
+		file.SetNewJson3Number(file, "Particle: Velocity", velocity);
+		file.SetNewJson3Number(file, "Particle: Position", position);
+		file.SetNewJson3Number(file, "Particle: Direction", direction);
+		//file.SetNewJson4Number(file, "Particle: Direction", Quat::FromEulerXYX(color));
+		//
+		file.SetNewJsonBool(file.ValueToObject(file.GetRootValue()), "Particle: Is Active", isActive);
+		node.SetValueToArray(array, file.GetRootValue());
+		return true;
+	}
+
 public:
 
 	float lifeTime;

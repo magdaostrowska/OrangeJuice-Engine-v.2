@@ -55,3 +55,18 @@ void ParticleEffect_Size::OnEditor(int emitterIndex)
 		ImGui::Unindent();
 	}
 }
+
+bool ParticleEffect_Size::OnLoad(JsonParsing& node)
+{
+	toDelete = node.GetJsonBool("PES: To Delete");
+	return true;
+}
+
+bool ParticleEffect_Size::OnSave(JsonParsing& node, JSON_Array* array)
+{
+	JsonParsing file = JsonParsing();
+	file.SetNewJsonBool(file.ValueToObject(file.GetRootValue()), "PES: To Delete", toDelete);
+	//*************************************///
+	node.SetValueToArray(array, file.GetRootValue());
+	return true;
+}

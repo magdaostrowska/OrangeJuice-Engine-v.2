@@ -34,10 +34,10 @@ public:
 	float4x4 matrixViewFrustum;
 	float4x4 matrixProjectionFrustum;
 	TransformComponent* transform;
+	Frustum camera;
 
 private:
-
-	Frustum camera;
+	
 	Quat currentRotation;
 	float3 currentPos;
 

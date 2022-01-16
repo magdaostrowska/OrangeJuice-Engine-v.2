@@ -20,6 +20,9 @@ public:
 	virtual void Update(Particle& particle, float dt);
 	virtual void OnEditor(int emitterIndex);
 
+	virtual bool OnLoad(JsonParsing& node);
+	virtual bool OnSave(JsonParsing& node, JSON_Array* array);
+
 public:
 
 	ParticleEffectType type;

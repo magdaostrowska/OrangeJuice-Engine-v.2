@@ -26,6 +26,9 @@ public:
 	void Play();
 	void Stop();
 
+	bool OnLoad(JsonParsing& node) override;
+	bool OnSave(JsonParsing& node, JSON_Array* array) override;
+
 protected:
 
 	std::vector<Emitter*> emitters;

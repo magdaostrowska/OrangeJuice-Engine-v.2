@@ -19,6 +19,8 @@ bool BillboardParticle::Update(float dt)
 
 void BillboardParticle::RotateToFaceCamera()
 {
+	Frustum cameraFrustum = app->scene->mainCamera->camera;
+	//float3 billboard = (cameraFrustum.Pos)
 }
 
 void BillboardParticle::OnEditor()

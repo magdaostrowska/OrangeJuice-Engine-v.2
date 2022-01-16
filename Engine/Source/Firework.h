@@ -10,6 +10,9 @@ public:
 	void Update(float dt) override;
 	void Emit(float dt) override;
 
+	bool OnLoad(JsonParsing& node) override;
+	bool OnSave(JsonParsing& node, JSON_Array* array) override;
+
 public:
 
 	float limitY;

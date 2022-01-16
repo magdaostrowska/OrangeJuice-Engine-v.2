@@ -22,16 +22,20 @@ void Firework::Update(float dt)
 	for (int i = 0; i < particlesBuff.size(); i++) {
 
 		if (particlesBuff[i]->isActive == true) {
+			ParticleEffect_Velocity* velocityEffect = (ParticleEffect_Velocity*)GetParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
 			if (particlesBuff[i]->position.y - limitY > 0.1f) {
-				ParticleEffect_Velocity* velocityEffect = (ParticleEffect_Velocity*)GetParticleEffect(ParticleEffectType::VELOCITY_OVER_LIFETIME);
 				velocityEffect->minVelocity = { -0.5f, 0.2f, -0.5f };
-				velocityEffect->maxVelocity = { 0.5f, 0.2f, 0.5f };
+				velocityEffect->maxVelocity = { 0.0f, 0.2f, 0.5f };
 				LCG random;
 				float randomVel_x = random.Float(minVelocity.x, maxVelocity.x);
 				float randomVel_y = random.Float(minVelocity.y, maxVelocity.y);
 				float randomVel_z = random.Float(minVelocity.z, maxVelocity.z);
 				particlesBuff[i]->velocity = float3(randomVel_x, randomVel_y,randomVel_z );
 				directionChanged = true;
+			}
+			else
+			{
+				velocityEffect->minVelocity += {0.0f, -0.3f, 0.0f};
 			}
 		}
 	}
@@ -85,4 +89,20 @@ void Firework::Emit(float dt)
 		}
 		currTimer = timer;
 	}
+}
+
+bool Firework::OnLoad(JsonParsing& node)
+{
+	directionChanged = node.GetJsonNumber("Has Direction Changed");
+	limitY = node.GetJsonBool("LimitY");
+	return true;
+}
+
+bool Firework::OnSave(JsonParsing& node, JSON_Array* array)
+{
+	JsonParsing file = JsonParsing();
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "LimitY", limitY);
+	file.SetNewJsonBool(file.ValueToObject(file.GetRootValue()), "Has Direction Changed", directionChanged);
+	node.SetValueToArray(array, file.GetRootValue());
+	return true;
 }

@@ -32,6 +32,9 @@ public:
 	std::string GetNameFromEffect(ParticleEffectType type);
 	ParticleEffect* GetParticleEffect(ParticleEffectType type);
 
+	virtual bool OnLoad(JsonParsing& node);
+	virtual bool OnSave(JsonParsing& node, JSON_Array* array);
+
 protected:
 	void SetParticleTexture(Particle& particle);
 public:
@@ -43,7 +46,7 @@ public:
 
 	std::vector<ParticleEffect*> effects;
 	std::vector<Particle*> particlesBuff;
-	std::vector<Particle*> fireworkParticlesBuff;
+	//std::vector<Particle*> fireworkParticlesBuff;
 	Particle* particleReference;
 	GameObject* own;
 

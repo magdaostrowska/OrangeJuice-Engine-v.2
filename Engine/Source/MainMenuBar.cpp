@@ -112,6 +112,24 @@ bool MainMenuBar::Update(float dt)
 			ImGui::SetTooltip("Opens the file menu");
 		}
 
+		if (ImGui::BeginMenu("Assets"))
+		{
+			if (ImGui::MenuItem("Create Empty", "", &ret))
+			{
+				GameObject* go = app->scene->CreateGameObject(app->scene->GetRoot(), true);
+				go->SetName("EmptyGameObject");
+			}
+			if (ImGui::MenuItem("Create Particle System", "", &ret))
+			{
+				GameObject* go = app->scene->CreateGameObject(app->scene->GetRoot(), true);
+				go->CreateComponent(ComponentType::PARTICLE_SYSTEM);
+				go->SetName("Custom Particle System");
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("Opens the assets menu");
+
 		if (ImGui::BeginMenu("Edit"))
 		{
 			ImGui::MenuItem("Undo", "Ctrl + Z", &ret);

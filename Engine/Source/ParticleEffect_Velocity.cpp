@@ -61,3 +61,21 @@ void ParticleEffect_Velocity::OnEditor(int emitterIndex)
 		ImGui::Unindent();
 	}
 }
+
+bool ParticleEffect_Velocity::OnLoad(JsonParsing& node)
+{
+	minVelocity = node.GetJson3Number(node, "PEV: Min Velocity");
+	minVelocity = node.GetJson3Number(node, "PEV: Max Velocity");
+	toDelete = node.GetJsonBool("PEV: To Delete");
+	return true;
+}
+
+bool ParticleEffect_Velocity::OnSave(JsonParsing& node, JSON_Array* array)
+{
+	JsonParsing file = JsonParsing();
+	file.SetNewJson3Number(file, "PEV: Min Velocity", minVelocity);
+	file.SetNewJson3Number(file, "PEV: Max Velocity", maxVelocity);
+	file.SetNewJsonBool(file.ValueToObject(file.GetRootValue()), "PEV: To Delete", toDelete);
+	node.SetValueToArray(array, file.GetRootValue());
+	return true;
+}
