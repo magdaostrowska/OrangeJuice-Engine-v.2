@@ -86,12 +86,21 @@ The menus are also very straight-forward, you can navigate through them and have
 - You can close any tab from the user interface, but don't worry, as you can re-open any window at any time.
 - You can click and hold any tab to reallocate it anywhere you want.
 
-
-### Game Engine Developers
+## Game Engine Developers
 
 > [Jan Adell](https://github.com/JanAdell)
+
 > [Oscar Reguera](https://github.com/oscarrep)
+
 > [Magdalena Ostrowska](https://github.com/magdaostrowska)
+
+## Project Website
+
+> [Orange Juice Engine's Website](https://magdaostrowska.github.io/OrangeJuice-Engine-v.2/)
+
+## Project Repository
+
+> [Orange Juice Engine's repository](https://github.com/magdaostrowska/OrangeJuice-Engine-v.2/)
 
 ## Forked from
 > [Ragnar Engine](https://github.com/UriKurae/Ragnar-Engine)
